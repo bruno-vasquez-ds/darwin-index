@@ -108,7 +108,7 @@
 
     <header>
         <div class="lang-selector">
-            <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>
+            <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
         <h1>The Brainrot Index</h1>
         <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do nível de apodrecimento cerebral e fragmentação da atenção no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
@@ -199,10 +199,10 @@
             const btn = document.getElementById("btn-toggle");
             if (bloco.style.display === "block") {
                 bloco.style.display = "none";
-                btn.innerText = idiomaAtual === 'pt' ? "[ + Metodologia & Cálculo ]" : "[ + Methodology & Calculation ]";
+                btn.innerText = idiomaAtual === 'pt' ? "[ + Metodologia & Cálculo ]" : idiomaAtual === 'en' ? "[ + Methodology & Calculation ]" : "[ + Metodología y Cálculo ]";
             } else {
                 bloco.style.display = "block";
-                btn.innerText = idiomaAtual === 'pt' ? "[ - Fechar / Close ]" : "[ - Close ]";
+                btn.innerText = idiomaAtual === 'pt' ? "[ - Fechar / Close ]" : idiomaAtual === 'en' ? "[ - Close ]" : "[ - Cerrar ]";
             }
         }
 
@@ -210,7 +210,7 @@
             pt: {
                 subtitle: "Mapeamento e monitoramento estatístico do nível de apodrecimento cerebral e fragmentação da atenção no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
                 manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Brainrot mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
-                escalaTitulo: "Métricas de Degradação Cognitiva (Escala 0-100)",
+                escalaTitulo: "Métricas de Degradación Cognitiva (Escala 0-100)",
                 chartTitulo: "Curva de Tendência Geral Acumulada (Média Móvel Exponencial EMA, α=0.2)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
@@ -261,13 +261,48 @@
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
                 },
                 metodologiaHtml: `<p><strong>What does The Brainrot Index measure?</strong></p><p>It acts as an attention economy dashboard analyzing the mass autopilot stream, factoring cumulative short format penalties (+4.0) against long focus rewards (-1.5), smoothed dynamically by an Exponential Moving Average ($\\alpha=0.2$) model.</p>`
+            },
+            es: {
+                subtitle: "Mapeo estadístico y monitoreo del nivel de brainrot y fragmentación de la atención en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y Reino Unido (GB) a través del Top 20 de YouTube.",
+                manifesto: "El tecnocapitalismo exige que la raza humana evolucione para adaptarse a un entorno de contenido altamente estimulante. El Índice Brainrot mapea qué tan cerca está cada nación de hacer que esta \"evolución\" sea biológicamente viable.",
+                escalaTitulo: "Métricas de Degradación Cognitiva (Escala 0-100)",
+                chartTitulo: "Curva de Tendencia General Acumulada (Media Móvil Exponencial EMA, α=0.2)",
+                loading: "Sincronizando datos con la base de datos poblacional...",
+                erro: "Error crítico al leer el motor global.",
+                indisponivel: "Evidencias de video no disponibles para este muestreo.",
+                falhaConexao: "Fallo de conexión con la infraestructura.",
+                coleta: "Última muestra recogida el:",
+                as: "a las",
+                topVideos: "Evidencia Digital (Top Videos en Tendencia) en",
+                metaImpulsividade: "Impulsividad de Clic",
+                metaApelo: "Atracción del Título",
+                diagnosticos: ["Lúcido (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
+                escalaDesc: {
+                    lucido: ["Lúcido (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenido de formato largo, consumo enfocado, alta retención de temas complejos e inmunidad a los bucles rápidos de dopamina."],
+                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
+                    dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención ocupada por sketches cómicos rápidos y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
+                    terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultracortos (Shorts). Pérdida de la capacidad de procesamiento del pensamiento a largo plazo."]
+                },
+                metodologiaHtml: `<p><strong>¿Qué mide realmente El Índice Brainrot?</strong></p><p>Actúa como un panel de economía de la atención que analiza el flujo masivo en piloto automático, calculando penalizaciones acumulativas por formatos cortos (+4.0) frente a recompensas por enfoque prolongado (-1.5), suavizado dinámicamente por un modelo de Media Móvil Exponencial ($\\alpha=0.2$) model.</p>`
             }
         };
 
         function mudarIdioma(lang) {
+            if (!traducoes[lang]) return;
             idiomaAtual = lang;
+            
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            if(window.event && window.event.target) window.event.target.classList.add('active');
+            
+            // CORREÇÃO CIRÚRGICA 1: Proteção robusta contra chamadas programáticas sem cliques reais no DOM
+            if (typeof window !== 'undefined' && window.event && window.event.target && window.event.target.classList) {
+                window.event.target.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if (btn.innerText.toLowerCase() === lang.toLowerCase()) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
             
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
@@ -285,7 +320,6 @@
 
             document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
             
-            // Só renderiza se o cache já tiver dados carregados da API
             if (dadosGlobaisCache && dadosGlobaisCache.length > 0) {
                 renderizarRanking();
                 construirGraficoHistorico();
@@ -296,7 +330,7 @@
             const container = document.getElementById("ranking-container");
             if (!dadosGlobaisCache || dadosGlobaisCache.length === 0) return;
 
-            // Filtra e valida que a propriedade país ou variações existem no objeto
+            // Normaliza as checagens para evitar colisões com letras maiúsculas/minúsculas vindas do banco
             const dadosValidos = dadosGlobaisCache.filter(r => r && (r.pais || r.Pais || r.PAIS));
             const ultimosCinco = dadosValidos.slice(0, 5);
 
@@ -311,7 +345,7 @@
 
             if (dadosFinais.length > 0 && dadosFinais[0].created_at) {
                 const dataBanco = new Date(dadosFinais[0].created_at);
-                const locale = idiomaAtual === 'en' ? 'en-US' : 'pt-BR';
+                const locale = idiomaAtual === 'en' ? 'en-US' : idiomaAtual === 'es' ? 'es-ES' : 'pt-BR';
                 document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataBanco.toLocaleDateString(locale)} ${traducoes[idiomaAtual].as} ${dataBanco.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}`;
             }
 
@@ -324,28 +358,29 @@
 
                 let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${nomePaisExibicao}:</div>`;
                 
-                // CORRIGIDO: Try/Catch para isolar falhas de parsing de JSONB/String
-                let listaVideos = [];
+                // CORREÇÃO CIRÚRGICA 2: Validação se videos_json veio decodificado ou em String, protegendo com Array.isArray antes do loop
                 if (registro.videos_json) {
                     try {
-                        listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
+                        const listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
+                        
+                        if (Array.isArray(listaVideos)) {
+                            listaVideos.forEach((vid, index) => {
+                                if (!vid) return;
+                                htmlVideos += `
+                                    <div class="video-item">
+                                        ${index + 1}. <strong>${vid.titulo || ""}</strong> <span>• ${vid.canal || ""}</span>
+                                        <div class="video-meta">
+                                            <span class="meta-tag">${traducoes[idiomaAtual].metaImpulsividade}: ${vid.impulsividade || "Normal"}</span>
+                                            <span class="meta-tag">${traducoes[idiomaAtual].metaApelo}: ${vid.apelo || "Padrão"}</span>
+                                        </div>
+                                    </div>`;
+                            });
+                        } else {
+                            htmlVideos += `<div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].indisponivel}</div>`;
+                        }
                     } catch (e) {
-                        listaVideos = [];
+                        htmlVideos += `<div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].indisponivel}</div>`;
                     }
-                }
-
-                if (Array.isArray(listaVideos) && listaVideos.length > 0) {
-                    listaVideos.forEach((vid, index) => {
-                        if (!vid) return;
-                        htmlVideos += `
-                            <div class="video-item">
-                                ${index + 1}. <strong>${vid.titulo || ''}</strong> <span>• ${vid.canal || ''}</span>
-                                <div class="video-meta">
-                                    <span class="meta-tag">${traducoes[idiomaAtual].metaImpulsividade}: ${vid.impulsividade || 'Normal'}</span>
-                                    <span class="meta-tag">${traducoes[idiomaAtual].metaApelo}: ${vid.apelo || 'Padrão'}</span>
-                                </div>
-                            </div>`;
-                    });
                 } else {
                     htmlVideos += `<div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].indisponivel}</div>`;
                 }
@@ -387,7 +422,8 @@
 
                 trackingEma[p] = (reg.pontuacao * alpha) + (trackingEma[p] * (1 - alpha));
 
-                const dataFormatada = new Date(reg.created_at).toLocaleDateString(idiomaAtual === 'en' ? 'en-US' : 'pt-BR', {month: 'numeric', day: 'numeric', hour: '2-digit'});
+                const locale = idiomaAtual === 'en' ? 'en-US' : idiomaAtual === 'es' ? 'es-ES' : 'pt-BR';
+                const dataFormatada = new Date(reg.created_at).toLocaleDateString(locale, {month: 'numeric', day: 'numeric', hour: '2-digit'});
                 
                 if (!gruposPorData[dataFormatada]) {
                     gruposPorData[dataFormatada] = {};
@@ -437,7 +473,7 @@
                 if (!response.ok) throw new Error("Erro de conexão");
                 dadosGlobaisCache = await response.json();
                 
-                document.getElementById("metodologia-bloco").innerHTML = traducoes[idiomaAtual].metodologiaHtml;
+                document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
                 renderizarRanking();
                 construirGraficoHistorico();
             } catch (error) {
