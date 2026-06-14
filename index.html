@@ -150,13 +150,12 @@
     <footer>
         <button id="btn-toggle" class="toggle-btn" onclick="toggleMetodologia()">[ + Metodologia & Cálculo / Methodology & Calculation ]</button>
         <div id="metodologia-bloco" class="metodologia-content">
-            <!-- Injetado dinamicamente via JS -->
-        </div>
+            </div>
     </footer>
 
     <script>
-        // Chamada apontando para a Edge Function que lê a tabela historico_darwin_v2
-        const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v5";
+        // CORRIGIDO: Agora apontando explicitamente para a função v6 no Supabase
+        const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v6";
         
         let idiomaAtual = 'pt';
         let dadosGlobaisCache = [];
@@ -284,7 +283,7 @@
                 topVideos: "Evidencias Digitales (Top Videos en Tendencia) en",
                 metaImpulsividade: "Impulsividad de Clic",
                 metaApelo: "Apelación del Título",
-                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
+                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miseráveis Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo focado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
                     miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
@@ -293,11 +292,11 @@
                 },
                 metodologiaHtml: `
                     <p><strong>¿Qué mide realmente el Índice Darwin?</strong></p>
-                    <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula la atención colectiva.</em></p>
+                    <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula a la atención colectiva.</em></p>
                     <p>El algoritmo mide el nivel de estrés impuesto a nuestra capacidad de enfoque continuo basándose en tres indicadores conductuales de la lista de los 20 principales elementos en tendencia:</p>
                     <ul>
                         <li><strong>El desagüe del aburrimiento:</strong> Analizamos las tendencias porque reflejan el consumo en piloto automático de las masas. Mapea la mente colectiva durante los períodos de menor esfuerzo mental voluntario.</li>
-                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituada al cambio continuo de tema.</li>
+                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituado al cambio continuo de tema.</li>
                         <li><strong>Saturación de dopamina rápida:</strong> Los videos de comedia y los formatos ultra cortos (Shorts) inducen recompensas cerebrales inmediatas. El ranking cuantifica qué tan anestesiado y adaptado biológicamente está cada país a este bombardeo constante.</li>
                     </ul>
                     <p><strong>La Fórmula Matemática del Modelo:</strong></p>
@@ -379,7 +378,6 @@
                 const block = document.createElement("div");
                 block.className = "country-block";
 
-                // Puxa e renderiza os vídeos salvos de forma estática do banco de dados (JSON)
                 let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${registro.pais.toUpperCase()}:</div>`;
                 
                 if (registro.videos_json) {
@@ -419,7 +417,6 @@
 
         async function carregarDadosIniciais() {
             try {
-                // Requisição única adicionando timestamp para quebrar cache agressivo do navegador
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 dadosGlobaisCache = await response.json();
                 document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
