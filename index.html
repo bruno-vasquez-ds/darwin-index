@@ -71,7 +71,11 @@
         .video-item { margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
         .video-item span { color: #888888; }
 
-        /* Estilos do Novo Rodapé Sanfona */
+        /* Estilos da Seção de Afiliados */
+        .livros-lista a { color: #000000; text-decoration: none; font-weight: 700; }
+        .livros-lista a:hover { text-decoration: underline; }
+
+        /* Estilos do Rodapé Sanfona */
         footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e5e5; }
         .toggle-btn {
             background: none; border: none; font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -106,7 +110,8 @@
             <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
         <h1>The Darwin Index</h1>
-        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
+        <!-- Subtítulo atualizado com "o risco de declínio" -->
+        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
         <div id="txt-manifesto" class="manifesto-block">
             O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
         </div>
@@ -143,12 +148,20 @@
         <div id="ranking-container">
             <div class="loading">Sincronizando dados...</div>
         </div>
+
+        <!-- Seção de Bibliografia com Links de Afiliados integrada de forma minimalista -->
+        <section class="escala-racional" style="border-top: 1px solid #e5e5e5; border-bottom: none; margin-top: 60px; padding-top: 20px;">
+            <div id="txt-bibliografia-titulo" class="escala-titulo">Bibliografia de Suporte (Links Amazon)</div>
+            <ul id="lista-livros" class="livros-lista" style="list-style: none; font-size: 13px; line-height: 1.8;">
+                <!-- Injetado dinamicamente via JS -->
+            </ul>
+        </section>
     </main>
 
     <footer>
         <button id="btn-toggle" class="toggle-btn" onclick="toggleMetodologia()">[ + Metodologia & Cálculo / Methodology & Calculation ]</button>
         <div id="metodologia-bloco" class="metodologia-content">
-            <!-- O script vai preencher o texto explicativo dinamicamente com base no idioma -->
+            <!-- Injetado dinamicamente via JS -->
         </div>
     </footer>
 
@@ -162,7 +175,7 @@
         const dicionarioBandeiras = {
             "BR": "🇧🇷", "US": "🇺🇸", "JP": "🇯🇵", "IN": "🇮🇳", "GB": "🇬🇧",
             "KR": "🇰🇷", "MX": "🇲🇽", "FR": "🇫🇷", "DE": "🇩🇪", "ID": "🇮🇩", 
-            "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
+            "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇬", "TW": "🇹🇼"
         };
 
         function obterBandeira(sigla) {
@@ -184,9 +197,10 @@
 
         const traducoes = {
             pt: {
-                subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
+                subtitle: "Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
                 manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
+                bibliografiaTitulo: "Bibliografia de Suporte (Links Amazon)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
                 indisponivel: "Dados históricos de varredura indisponíveis.",
@@ -202,6 +216,11 @@
                     dopado: ["Dopados por Algoritmo", "Fragmentação severa de foco. Grade de atenção tomada por esquetes de comédia rápida e ruído cultural. Tempo de foco contínuo severamente reduzido."],
                     terminal: ["Estágio Terminal", "Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado."]
                 },
+                livros: `
+                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_1" target="_blank">A Fábrica de Cretinos Digitais</a> - Michel Desmurget</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_2" target="_blank">Nação Dopamina</a> - Anna Lembke</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_3" target="_blank">Foco Roubado</a> - Johann Hari</li>
+                `,
                 metodologiaHtml: `
                     <p><strong>O que o Índice Darwin realmente mede?</strong></p>
                     <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
@@ -209,7 +228,7 @@
                     <ul>
                         <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
                         <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
-                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
+                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de stimuli.</li>
                     </ul>
                     <p><strong>A Equação Matemática do Modelo:</strong></p>
                     <p>Os dados brutos coletados da API são submetidos a uma função cumulativa com estado basal de controle fixado em 50 pontos. Pontuações elevadas aproximam o país do limiar de colapso de atenção sustentada:</p>
@@ -226,9 +245,10 @@
                 `
             },
             en: {
-                subtitle: "Statistical mapping and monitoring of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
+                subtitle: "Statistical mapping and monitoring of the risk of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
                 manifesto: "Techno-capitalism requires the human race to evolve in order to adapt to a highly stimulating content environment. The Darwin Index maps how close each nation is to making this \"evolution\" biologically viable.",
                 escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
+                bibliografiaTitulo: "Selected Reading (Amazon Links)",
                 loading: "Synchronizing data with the population database...",
                 erro: "Critical error reading the global engine.",
                 indisponivel: "Historical scan data unavailable.",
@@ -244,6 +264,11 @@
                     dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
                 },
+                livros: `
+                    <li>• <a href="https://amzn.to/SUA_TAG_US_1" target="_blank">The Digital Cretin Factory</a> - Michel Desmurget</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_US_2" target="_blank">Dopamine Nation</a> - Anna Lembke</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_US_3" target="_blank">Stolen Focus</a> - Johann Hari</li>
+                `,
                 metodologiaHtml: `
                     <p><strong>What does The Darwin Index actually measure?</strong></p>
                     <p><em>Methodological Notice: This site is not an official scientific study and does not measure intrinsic intelligence or IQ. It is an artistic and computational provocation on how digital architecture shapes collective attention.</em></p>
@@ -268,9 +293,10 @@
                 `
             },
             es: {
-                subtitle: "Mapeo y monitoreo estadístico del declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
-                manifesto: "El tecnocapitalismo exige que la raza humana evolucione para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
+                subtitle: "Mapeo y monitoreo estadístico del riesgo de declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
+                manifesto: "El tecnocapitalismo exige que la raza humana evolue para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
+                bibliografiaTitulo: "Bibliografía Seleccionada (Enlaces Amazon)",
                 loading: "Sincronizando datos con la base de datos poblacional...",
                 erro: "Error crítico al leer el motor global.",
                 indisponivel: "Datos históricos de escaneo no disponibles.",
@@ -286,6 +312,11 @@
                     dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
                     terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
                 },
+                livros: `
+                    <li>• <a href="https://amzn.to/SUA_TAG_ES_1" target="_blank">La fábrica de cretinos digitales</a> - Michel Desmurget</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_ES_2" target="_blank">Generación Dopamina</a> - Anna Lembke</li>
+                    <li>• <a href="https://amzn.to/SUA_TAG_ES_3" target="_blank">El valor de la atención</a> - Johann Hari</li>
+                `,
                 metodologiaHtml: `
                     <p><strong>¿Qué mide realmente el Índice Darwin?</strong></p>
                     <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula la atención colectiva.</em></p>
@@ -327,6 +358,8 @@
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
+            document.getElementById("txt-bibliografia-titulo").innerText = traducoes[lang].bibliografiaTitulo;
+            document.getElementById("lista-livros").innerHTML = traducoes[lang].livros;
             
             document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
             document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
@@ -337,7 +370,6 @@
             document.getElementById("diag-terminal").innerText = traducoes[lang].escalaDesc.terminal[0];
             document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
 
-            // Atualiza o bloco sanfona interno de forma limpa e altera o botão se necessário
             document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
             const btn = document.getElementById("btn-toggle");
             if (document.getElementById("metodologia-bloco").style.display !== "block") {
@@ -427,6 +459,7 @@
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 dadosGlobaisCache = await response.json();
                 document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
+                document.getElementById("lista-livros").innerHTML = traducoes['pt'].livros;
                 renderizarRanking();
             } catch (error) {
                 document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
