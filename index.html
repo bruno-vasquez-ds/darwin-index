@@ -15,6 +15,18 @@
         h1 { font-size: 48px; font-weight: 700; line-height: 1; text-transform: uppercase; }
         .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; padding-right: 140px; }
         
+        /* Manifesto / Tese em Itálico Minimalista */
+        .manifesto-block {
+            margin-top: 30px;
+            padding-left: 16px;
+            border-left: 3px solid #000000;
+            font-size: 14px;
+            line-height: 1.5;
+            font-style: italic;
+            color: #111111;
+            max-width: 700px;
+        }
+
         .lang-selector {
             position: absolute;
             top: 0;
@@ -117,8 +129,13 @@
             <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
         <h1>The Darwin Index</h1>
-        <!-- Subtítulo inicial formatado com os nomes por extenso e siglas em PT -->
         <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
+        
+        <!-- Nova seção conceitual da tese darwinista -->
+        <div id="txt-manifesto" class="manifesto-block">
+            O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
+        </div>
+        
         <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
     </header>
 
@@ -179,6 +196,7 @@
         const traducoes = {
             pt: {
                 subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
+                manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
@@ -199,6 +217,7 @@
             },
             en: {
                 subtitle: "Statistical mapping and monitoring of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
+                manifesto: "Techno-capitalism requires the human race to evolve in order to adapt to a highly stimulating content environment. The Darwin Index maps how close each nation is to making this \"evolution\" biologically viable.",
                 escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
                 loading: "Synchronizing data with the population database...",
                 erro: "Critical error reading the global engine.",
@@ -219,16 +238,17 @@
             },
             es: {
                 subtitle: "Mapeo y monitoreo estadístico del declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
+                manifesto: "El tecnocapitalismo exige que la raza humana evolucione para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
                 loading: "Sincronizando datos con la base de datos poblacional...",
                 erro: "Error crítico al leer el motor global.",
-                indisponivel: "Datos históricos de escaneo no disponibles.",
+                indisponivel: "Datos históricos de escaneo no disponíveis.",
                 falhaConexao: "Fallo de conexión con la infraestructura.",
                 coleta: "Última muestra recolectada el:",
                 as: "a las",
                 topVideos: "Top 3 Videos en Tendencia en",
                 carregandoEvidencias: "Cargando evidencias...",
-                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la IPv4 Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
+                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
                 diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo enfocado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
@@ -253,6 +273,7 @@
             event.target.classList.add('active');
             
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
+            document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
             document.getElementById("txt-metodologia").innerHTML = traducoes[lang].metodologia;
             
