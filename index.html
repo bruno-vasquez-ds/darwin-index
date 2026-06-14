@@ -54,17 +54,20 @@
             letter-spacing: 0.05em;
         }
 
+        .country-block {
+            border-bottom: 1px solid #e5e5e5;
+            padding: 24px 0;
+        }
+
+        .country-block:last-child {
+            border-bottom: 2px solid #000000;
+        }
+
         .country-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 32px 0;
-            border-bottom: 1px solid #e5e5e5;
             gap: 24px;
-        }
-
-        .country-row:last-child {
-            border-bottom: 2px solid #000000;
         }
 
         .country-info {
@@ -114,6 +117,35 @@
             line-height: 1;
         }
 
+        .top-videos {
+            margin-top: 16px;
+            padding-left: 80px;
+            font-size: 13px;
+            color: #444444;
+            display: none; /* Inicia escondido, aparece quando carregado */
+        }
+
+        .top-videos-title {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            color: #888888;
+            margin-bottom: 6px;
+        }
+
+        .video-item {
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .video-item span {
+            color: #888888;
+        }
+
         footer {
             margin-top: 60px;
             font-size: 12px;
@@ -130,10 +162,11 @@
         @media (max-width: 600px) {
             body { padding: 40px 20px; }
             h1 { font-size: 32px; }
-            .country-row { gap: 16px; padding: 24px 0; }
+            .country-row { gap: 16px; }
             .country-info { width: 50px; }
             .flag-code { font-size: 20px; }
             .score { font-size: 22px; width: 50px; }
+            .top-videos { padding-left: 50px; }
         }
     </style>
 </head>
@@ -157,12 +190,36 @@
     <script>
         const SUPABASE_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/rest/v1/historico_darwin";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubHhvYnd3d2Fwa2JvZWxkb3liIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTQwNjksImV4cCI6MjA5Njk5MDA2OX0.bJBZY6mfE2CQgOBh-8vW2wWOQhFjRFUm32VcnrD6-SM";
+        const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
 
         function obterDiagnostico(nota) {
             if (nota <= 30) return "Lúcidos (Baixo Risco)";
             if (nota <= 55) return "Miseráveis Cognitivos (Estado Basal)";
             if (nota <= 75) return "Dopados por Algoritmo (Fragmentados)";
             return "Estágio Terminal (Idiocracia)";
+        }
+
+        async function buscarTopVideos(pais, elementoDestino) {
+            try {
+                const url = `https://www.googleapis.com/youtube/v3/videos?chart=mostPopular&regionCode=${pais}&maxResults=3&part=snippet&key=${YT_KEY}`;
+                const res = await fetch(url);
+                const dados = await res.json();
+                
+                if (dados.items && dados.items.length > 0) {
+                    let htmlVideos = `<div class="top-videos-title">Top 3 Vídeos em Alta Em ${pais}:</div>`;
+                    dados.items.forEach((item, index) => {
+                        htmlVideos += `
+                            <div class="video-item">
+                                ${index + 1}. <strong>${item.snippet.title}</strong> <span>• ${item.snippet.channelTitle}</span>
+                            </div>
+                        `;
+                    });
+                    elementoDestino.innerHTML = htmlVideos;
+                    elementoDestino.style.display = "block";
+                }
+            } catch (e) {
+                console.error("Erro ao buscar top videos para " + pais);
+            }
         }
 
         async function carregarRanking() {
@@ -175,11 +232,8 @@
                 });
                 
                 const todosDados = await response.json();
-                
-                // Filtra para garantir que só pegamos registros válidos com o nome do país preenchido
                 const dadosValidos = todosDados.filter(r => r.pais);
 
-                // Agrupa para pegar apenas o último registro de cada país único
                 const paisesUnicos = {};
                 dadosValidos.forEach(item => {
                     if (!paisesUnicos[item.pais]) {
@@ -194,36 +248,45 @@
                 container.innerHTML = "";
 
                 if (dadosFinais.length === 0) {
-                    container.innerHTML = "<div class='loading'>Nenhum dado populacional recente encontrado. Execute o motor do backend.</div>";
+                    container.innerHTML = "<div class='loading'>Nenhum dado populacional recente encontrado.</div>";
                     return;
                 }
 
                 dadosFinais.forEach(registro => {
-                    const row = document.createElement("div");
-                    row.className = "country-row";
+                    const block = document.createElement("div");
+                    block.className = "country-block";
 
-                    row.innerHTML = `
-                        <div class="country-info">
-                            <div class="flag-code">${registro.pais}</div>
-                        </div>
-                        <div class="bar-section">
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 0%"></div>
+                    block.innerHTML = `
+                        <div class="country-row">
+                            <div class="country-info">
+                                <div class="flag-code">${registro.pais}</div>
                             </div>
-                            <div class="diagnostico">${obterDiagnostico(registro.pontuacao)}</div>
+                            <div class="bar-section">
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 0%"></div>
+                                </div>
+                                <div class="diagnostico">${obterDiagnostico(registro.pontuacao)}</div>
+                            </div>
+                            <div class="score">${registro.pontuacao}</div>
                         </div>
-                        <div class="score">${registro.pontuacao}</div>
+                        <div class="top-videos" id="videos-${registro.pais}">
+                            <div style="color:#888; font-size:11px;">Carregando evidências empíricas...</div>
+                        </div>
                     `;
 
-                    container.appendChild(row);
+                    container.appendChild(block);
 
                     setTimeout(() => {
-                        row.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`;
+                        block.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`;
                     }, 100);
+
+                    // Puxa os vídeos em tempo real para este país
+                    const elementoVideos = block.querySelector(`#videos-${registro.pais}`);
+                    buscarTopVideos(registro.pais, elementoVideos);
                 });
 
             } catch (error) {
-                document.getElementById("ranking-container").innerHTML = "<div class='loading'>Falha na leitura do banco de dados de amostragem.</div>";
+                document.getElementById("ranking-container").innerHTML = "<div class='loading'>Falha na leitura do banco de dados.</div>";
             }
         }
 
