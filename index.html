@@ -15,73 +15,34 @@
         h1 { font-size: 48px; font-weight: 700; line-height: 1; text-transform: uppercase; }
         .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; padding-right: 140px; }
         
-        /* Manifesto / Tese em Itálico Minimalista */
         .manifesto-block {
-            margin-top: 30px;
-            padding-left: 16px;
-            border-left: 3px solid #000000;
-            font-size: 14px;
-            line-height: 1.5;
-            font-style: italic;
-            color: #111111;
-            max-width: 700px;
+            margin-top: 30px; padding-left: 16px; border-left: 3px solid #000000;
+            font-size: 14px; line-height: 1.5; font-style: italic; color: #111111; max-width: 700px;
         }
 
         .lang-selector {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #888888;
+            position: absolute; top: 0; right: 0; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #888888;
         }
         .lang-btn {
-            background: none;
-            border: none;
-            color: #888888;
-            cursor: pointer;
-            padding: 0 4px;
-            font-family: inherit;
-            font-weight: 700;
-            transition: color 0.2s;
+            background: none; border: none; color: #888888; cursor: pointer;
+            padding: 0 4px; font-family: inherit; font-weight: 700; transition: color 0.2s;
         }
-        .lang-btn.active {
-            color: #000000;
-            border-bottom: 1px solid #000000;
-        }
+        .lang-btn.active { color: #000000; border-bottom: 1px solid #000000; }
         .lang-btn:hover { color: #000000; }
 
         .timestamp-aviso {
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: #ff0000;
-            margin-top: 14px;
+            font-size: 11px; text-transform: uppercase; font-weight: 700;
+            letter-spacing: 0.05em; color: #ff0000; margin-top: 14px;
         }
 
         .escala-racional {
-            margin-top: 40px;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e5e5e5;
+            margin-top: 40px; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;
         }
         .escala-titulo {
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: #000000;
-            margin-bottom: 16px;
+            font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: #000000; margin-bottom: 16px;
         }
-        .escala-tabela {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            line-height: 1.5;
-        }
+        .escala-tabela { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; }
         .escala-tabela tr { border-bottom: 1px dashed #f0f0f0; }
         .escala-tabela tr:last-child { border-bottom: none; }
         .escala-tabela td { padding: 10px 0; vertical-align: top; }
@@ -109,7 +70,23 @@
         .top-videos-title { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: #888888; margin-bottom: 6px; }
         .video-item { margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
         .video-item span { color: #888888; }
-        footer { margin-top: 60px; font-size: 12px; line-height: 1.6; color: #666666; }
+
+        /* Estilos do Novo Rodapé Sanfona */
+        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e5e5; }
+        .toggle-btn {
+            background: none; border: none; font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; color: #000000; cursor: pointer; padding: 4px 0; font-family: inherit;
+        }
+        .toggle-btn:hover { text-decoration: underline; }
+        .metodologia-content { display: none; margin-top: 20px; font-size: 13px; line-height: 1.6; color: #555555; }
+        .metodologia-content p { margin-bottom: 12px; }
+        .metodologia-content ul { margin-left: 18px; margin-bottom: 16px; }
+        .metodologia-content li { margin-bottom: 6px; }
+        .formula-box {
+            background-color: #f9f9f9; padding: 16px; font-family: monospace; font-size: 12px;
+            color: #000000; border-left: 3px solid #000000; margin: 16px 0; line-height: 1.4;
+        }
+
         @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
         @media (max-width: 600px) {
             body { padding: 40px 20px; } h1 { font-size: 32px; } .country-row { gap: 16px; }
@@ -130,12 +107,9 @@
         </div>
         <h1>The Darwin Index</h1>
         <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
-        
-        <!-- Nova seção conceitual da tese darwinista -->
         <div id="txt-manifesto" class="manifesto-block">
             O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
         </div>
-        
         <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
     </header>
 
@@ -172,7 +146,10 @@
     </main>
 
     <footer>
-        <p id="txt-metodologia"><strong>Metodologia:</strong> Algoritmo baseado em Ecologia de Atenção Coletiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalidades aplicadas para tempos de foco inferiores a 8 minutos e consumo de Shorts/Brain Rot. Recompensa (Atenção de Platina) para focos consistentes acima de 20 minutos.</p>
+        <button id="btn-toggle" class="toggle-btn" onclick="toggleMetodologia()">[ + Metodologia & Cálculo / Methodology & Calculation ]</button>
+        <div id="metodologia-bloco" class="metodologia-content">
+            <!-- O script vai preencher o texto explicativo dinamicamente com base no idioma -->
+        </div>
     </footer>
 
     <script>
@@ -193,6 +170,18 @@
             return dicionarioBandeiras[siglaUpper] ? `<span class="flag-emoji">${dicionarioBandeiras[siglaUpper]}</span>` : "";
         }
 
+        function toggleMetodologia() {
+            const bloco = document.getElementById("metodologia-bloco");
+            const btn = document.getElementById("btn-toggle");
+            if (bloco.style.display === "block") {
+                bloco.style.display = "none";
+                btn.innerText = idiomaAtual === 'pt' ? "[ + Metodologia & Cálculo ]" : idiomaAtual === 'en' ? "[ + Methodology & Calculation ]" : "[ + Metodología y Cálculo ]";
+            } else {
+                bloco.style.display = "block";
+                btn.innerText = idiomaAtual === 'pt' ? "[ - Fechar / Close ]" : idiomaAtual === 'en' ? "[ - Close ]" : "[ - Cerrar ]";
+            }
+        }
+
         const traducoes = {
             pt: {
                 subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
@@ -206,14 +195,35 @@
                 as: "às",
                 topVideos: "Top 3 Vídeos em Alta em",
                 carregandoEvidencias: "Carregando evidências...",
-                metodologia: "<strong>Metodologia:</strong> Algoritmo baseado em Ecologia de Atenção Coletiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalidades aplicadas para tempos de foco inferiores a 8 minutos e consumo de Shorts/Brain Rot. Recompensa (Atenção de Platina) para focos consistentes acima de 20 minutos.",
                 diagnosticos: ["Lúcidos (Baixo Risco)", "Miseráveis Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estágio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Baixo Risco)", "Ecossistema saudável. Predomínio de conteúdos de longa duração, consumo focado, alta retenção de tópicos complexos e imunidade a loops de dopamina rápida."],
                     miseravel: ["Miseráveis Cognitivos", "Estado basal da população conectada moderna. Equilíbrio instável entre consumo útil e entretenimento passivo. Foco linear preservado, mas altamente vulnerável."],
                     dopado: ["Dopados por Algoritmo", "Fragmentação severa de foco. Grade de atenção tomada por esquetes de comédia rápida e ruído cultural. Tempo de foco contínuo severamente reduzido."],
                     terminal: ["Estágio Terminal", "Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado."]
-                }
+                },
+                metodologiaHtml: `
+                    <p><strong>O que o Índice Darwin realmente mede?</strong></p>
+                    <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
+                    <p>O algoritmo afere o nível de estresse imposto à nossa capacidade de foco contínuo a partir de três indicadores comportamentais extraídos do Top 20 em alta:</p>
+                    <ul>
+                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
+                        <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
+                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
+                    </ul>
+                    <p><strong>A Equação Matemática do Modelo:</strong></p>
+                    <p>Os dados brutos coletados da API são submetidos a uma função cumulativa com estado basal de controle fixado em 50 pontos. Pontuações elevadas aproximam o país do limiar de colapso de atenção sustentada:</p>
+                    <div class="formula-box">
+                        Nota Inicial = 50 (Estado Basal)<br><br>
+                        IF Média de Tempo < 8 minutos ➔ +25 Pontos<br>
+                        IF Média de Tempo > 20 minutos ➔ -10 Pontos (Bônus)<br><br>
+                        Adicionar Penalidades por Categoria de Conteúdo:<br>
+                        ➔ +2.0 por cada vídeo de Comédia (Estímulo Rápido)<br>
+                        ➔ +1.0 por cada vídeo de Entretenimento (Ruído de Fundo)<br>
+                        ➔ +5.0 por cada Short detectado (Menos de 60 segundos)<br><br>
+                        GATILHO CRÍTICO: Se Shorts ≥ 11 vídeos no Top 20 ➔ Travar Nota Final em 95 fixo (Overdose Dopaminérgica).
+                    </div>
+                `
             },
             en: {
                 subtitle: "Statistical mapping and monitoring of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
@@ -227,14 +237,35 @@
                 as: "at",
                 topVideos: "Top 3 Trending Videos in",
                 carregandoEvidencias: "Loading evidence...",
-                metodologia: "<strong>Methodology:</strong> Algorithm based on Collective Attention Ecology (Lorenz-Spreen et al., Nature). Scale from 0 to 100. Penalties applied for focus times under 8 minutes and Shorts/Brain Rot consumption. Reward (Platinum Attention) for consistent focus above 20 minutes.",
                 diagnosticos: ["Lucid (Low Risk)", "Cognitive Miserables (Baseline)", "Algorithm Doped (Fragmented)", "Terminal Stage (Idiocracy)"],
                 escalaDesc: {
                     lucido: ["Lucid (Low Risk)", "Healthy ecosystem. Predominance of long-form content, focused consumption, high retention of complex topics, and immunity to fast dopamine loops."],
                     miseravel: ["Cognitive Miserables", "Baseline state of the modern connected population. Unstable balance between useful consumption and passive entertainment. Linear focus preserved but highly vulnerable."],
                     dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
-                }
+                },
+                metodologiaHtml: `
+                    <p><strong>What does The Darwin Index actually measure?</strong></p>
+                    <p><em>Methodological Notice: This site is not an official scientific study and does not measure intrinsic intelligence or IQ. It is an artistic and computational provocation on how digital architecture shapes collective attention.</em></p>
+                    <p>The algorithm measures the level of stress imposed on our capacity for continuous focus using three behavioral indicators from the Top 20 Trending list:</p>
+                    <ul>
+                        <li><strong>The outlet of boredom:</strong> We analyze the top views because they reflect mass consumption on autopilot. It maps the collective mind during periods of minimum voluntary mental effort.</li>
+                        <li><strong>The patience clock:</strong> When the average retention time drops below 8 minutes, severe focus fragmentation is assumed, indicating a mind accustomed to continuous topic switching.</li>
+                        <li><strong>Fast dopamine saturation:</strong> Comedy videos and ultra-short formats (Shorts) induce immediate brain rewards. The ranking quantifies how anesthetized and biologically adapted each country is to this continuous bombardment.</li>
+                    </ul>
+                    <p><strong>The Mathematical Formula:</strong></p>
+                    <p>The raw data from the API is run through a cumulative function with a control baseline set at 50 points. High scores move a country closer to the threshold of sustained attention collapse:</p>
+                    <div class="formula-box">
+                        Initial Score = 50 (Baseline State)<br><br>
+                        IF Average Time < 8 minutes ➔ +25 Points<br>
+                        IF Average Time > 20 minutes ➔ -10 Points (Bonus)<br><br>
+                        Add Category-Based Content Penalties:<br>
+                        ➔ +2.0 for each Comedy video (Fast Stimulus)<br>
+                        ➔ +1.0 for each Entertainment video (Background Noise)<br>
+                        ➔ +5.0 for each Short detected (Under 60 seconds)<br><br>
+                        CRITICAL TRIGGER: If Shorts ≥ 11 videos in the Top 20 ➔ Hard lock Final Score at 95 (Dopaminergic Overdose).
+                    </div>
+                `
             },
             es: {
                 subtitle: "Mapeo y monitoreo estadístico del declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
@@ -242,20 +273,41 @@
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
                 loading: "Sincronizando datos con la base de datos poblacional...",
                 erro: "Error crítico al leer el motor global.",
-                indisponivel: "Datos históricos de escaneo no disponíveis.",
+                indisponivel: "Datos históricos de escaneo no disponibles.",
                 falhaConexao: "Fallo de conexión con la infraestructura.",
                 coleta: "Última muestra recolectada el:",
                 as: "a las",
                 topVideos: "Top 3 Videos en Tendencia en",
                 carregandoEvidencias: "Cargando evidencias...",
-                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
                 diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo enfocado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
                     miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
                     dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
                     terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
-                }
+                },
+                metodologiaHtml: `
+                    <p><strong>¿Qué mide realmente el Índice Darwin?</strong></p>
+                    <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula la atención colectiva.</em></p>
+                    <p>El algoritmo mide el nivel de estrés impuesto a nuestra capacidad de enfoque continuo basándose en tres indicadores conductuales de la lista de los 20 principales elementos en tendencia:</p>
+                    <ul>
+                        <li><strong>El desagüe del aburrimiento:</strong> Analizamos las tendencias porque reflejan el consumo en piloto automático de las masas. Mapea la mente colectiva durante los períodos de menor esfuerzo mental voluntario.</li>
+                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituada al cambio continuo de tema.</li>
+                        <li><strong>Saturación de dopamina rápida:</strong> Los videos de comedia y los formatos ultra cortos (Shorts) inducen recompensas cerebrales inmediatas. El ranking cuantifica qué tan anestesiado y adaptado biológicamente está cada país a este bombardeo constante.</li>
+                    </ul>
+                    <p><strong>La Fórmula Matemática del Modelo:</strong></p>
+                    <p>Los datos brutos de la API se procesan a través de una función acumulativa con una línea de base de control fijada en 50 puntos. Las puntuaciones altas acercan al país al umbral del colapso de la atención sostenida:</p>
+                    <div class="formula-box">
+                        Puntuación Inicial = 50 (Estado Basal)<br><br>
+                        IF Tiempo Promedio < 8 minutos ➔ +25 Puntos<br>
+                        IF Tiempo Promedio > 20 minutos ➔ -10 Puntos (Bono)<br><br>
+                        Añadir Penalizaciones por Categoría de Contenido:<br>
+                        ➔ +2.0 por cada video de Comedia (Estímulo Rápido)<br>
+                        ➔ +1.0 por cada video de Entretenimiento (Ruido de Fondo)<br>
+                        ➔ +5.0 por cada Short detectado (Menos de 60 segundos)<br><br>
+                        DISPARADOR CRÍTICO: Si Shorts ≥ 11 videos en el Top 20 ➔ Bloquear Puntuación Final en 95 fijo (Sobredosis Dopaminérgica).
+                    </div>
+                `
             }
         };
 
@@ -275,7 +327,6 @@
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
-            document.getElementById("txt-metodologia").innerHTML = traducoes[lang].metodologia;
             
             document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
             document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
@@ -285,6 +336,13 @@
             document.getElementById("desc-dopado").innerText = traducoes[lang].escalaDesc.dopado[1];
             document.getElementById("diag-terminal").innerText = traducoes[lang].escalaDesc.terminal[0];
             document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
+
+            // Atualiza o bloco sanfona interno de forma limpa e altera o botão se necessário
+            document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
+            const btn = document.getElementById("btn-toggle");
+            if (document.getElementById("metodologia-bloco").style.display !== "block") {
+                btn.innerText = lang === 'pt' ? "[ + Metodologia & Cálculo ]" : lang === 'en' ? "[ + Methodology & Calculation ]" : "[ + Metodología y Cálculo ]";
+            }
 
             renderizarRanking();
         }
@@ -368,6 +426,7 @@
             try {
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 dadosGlobaisCache = await response.json();
+                document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
                 renderizarRanking();
             } catch (error) {
                 document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
