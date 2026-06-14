@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -39,6 +40,7 @@
             margin-top: 10px;
             font-weight: 400;
             color: #666666;
+            line-height: 1.4;
         }
 
         #ranking-container {
@@ -46,26 +48,39 @@
         }
 
         .loading {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 500;
             animation: blink 1s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .country-row {
-            display: grid;
-            grid-template-columns: 80px 1fr 80px;
+            display: flex;
             align-items: center;
-            padding: 24px 0;
+            justify-content: space-between;
+            padding: 32px 0;
             border-bottom: 1px solid #e5e5e5;
+            gap: 24px;
         }
 
         .country-row:last-child {
             border-bottom: 2px solid #000000;
         }
 
+        .country-info {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
         .flag-code {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
+            line-height: 1;
+        }
+
+        .bar-section {
+            flex-grow: 1;
         }
 
         .bar-container {
@@ -73,6 +88,7 @@
             height: 16px;
             background-color: #f0f0f0;
             position: relative;
+            margin-bottom: 8px;
         }
 
         .bar-fill {
@@ -82,24 +98,21 @@
             transition: width 1.2s cubic-bezier(0.1, 0.8, 0.2, 1);
         }
 
-        .score {
-            font-size: 24px;
-            font-weight: 700;
-            text-align: right;
-        }
-
         .diagnostico {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             font-weight: 700;
-            margin-top: 4px;
             letter-spacing: 0.05em;
+            color: #555555;
         }
 
-        .meta-info {
-            font-size: 13px;
-            color: #666666;
-            margin-top: 4px;
+        .score {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: right;
+            width: 80px;
+            flex-shrink: 0;
+            line-height: 1;
         }
 
         footer {
@@ -118,8 +131,10 @@
         @media (max-width: 600px) {
             body { padding: 40px 20px; }
             h1 { font-size: 32px; }
-            .country-row { grid-template-columns: 60px 1fr 60px; }
-            .score { font-size: 18px; }
+            .country-row { gap: 16px; padding: 24px 0; }
+            .country-info { width: 50px; }
+            .flag-code { font-size: 20px; }
+            .score { font-size: 22px; width: 50px; }
         }
     </style>
 </head>
@@ -153,29 +168,46 @@
 
         async function carregarRanking() {
             try {
-                // Busca os últimos registros inseridos para garantir o dia atualizado
-                const response = await fetch(`${SUPABASE_URL}?order=id.desc&limit=5`, {
+                const response = await fetch(`${SUPABASE_URL}?order=id.desc&limit=30`, {
                     headers: {
                         "apikey": SUPABASE_KEY,
                         "Authorization": `Bearer ${SUPABASE_KEY}`
                     }
                 });
                 
-                const dados = await response.json();
+                const todosDados = await response.json();
                 
-                // Ordena do maior índice de burrice (pior cérebro) para o menor
-                dados.sort((a, b) => b.pontuacao - a.pontuacao);
+                // Filtra para garantir que só pegamos registros válidos com o nome do país preenchido
+                const dadosValidos = todosDados.filter(r => r.pais);
+
+                // Agrupa para pegar apenas o último registro de cada país único
+                const paisesUnicos = {};
+                dadosValidos.forEach(item => {
+                    if (!paisesUnicos[item.pais]) {
+                        paisesUnicos[item.pais] = item;
+                    }
+                });
+
+                const dadosFinais = Object.values(paisesUnicos);
+                dadosFinais.sort((a, b) => b.pontuacao - a.pontuacao);
 
                 const container = document.getElementById("ranking-container");
                 container.innerHTML = "";
 
-                dados.forEach(registro => {
+                if (dadosFinais.length === 0) {
+                    container.innerHTML = "<div class='loading'>Nenhum dado populacional recente encontrado. Execute o motor do backend.</div>";
+                    return;
+                }
+
+                dadosFinais.forEach(registro => {
                     const row = document.createElement("div");
                     row.className = "country-row";
 
                     row.innerHTML = `
-                        <div class="flag-code">${registro.pais}</div>
-                        <div>
+                        <div class="country-info">
+                            <div class="flag-code">${registro.pais}</div>
+                        </div>
+                        <div class="bar-section">
                             <div class="bar-container">
                                 <div class="bar-fill" style="width: 0%"></div>
                             </div>
@@ -186,7 +218,6 @@
 
                     container.appendChild(row);
 
-                    // Efeito de animação da barrinha crescendo
                     setTimeout(() => {
                         row.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`;
                     }, 100);
