@@ -66,14 +66,12 @@
         .diagnostico { font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: #555555; }
         .score { font-size: 32px; font-weight: 700; text-align: right; width: 80px; flex-shrink: 0; line-height: 1; }
         
-        /* Área Expandida de Evidências Seguras do Banco */
         .top-videos { margin-top: 16px; padding-left: 110px; font-size: 13px; color: #444444; }
         .top-videos-title { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: #888888; margin-bottom: 8px; }
         .video-item { margin-bottom: 8px; line-height: 1.4; }
         .video-meta { font-size: 11px; color: #888888; text-transform: uppercase; font-weight: 700; letter-spacing: 0.02em; margin-top: 2px; }
         .meta-tag { background: #f0f0f0; color: #000000; padding: 1px 5px; font-size: 10px; margin-right: 4px; }
 
-        /* Estilos do Rodapé Sanfona */
         footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e5e5; }
         .toggle-btn {
             background: none; border: none; font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -154,7 +152,6 @@
     </footer>
 
     <script>
-        // REVISADO: Endpoint da v6 fixado perfeitamente
         const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v6";
         
         let idiomaAtual = 'pt';
@@ -166,7 +163,15 @@
             "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
         };
 
-        // REVISADO: Proteção contra caixa baixa automática vinda do banco
+        // ADICIONADO: Função de diagnóstico traduzida para evitar quebra de escopo
+        function obterDiagnostico(nota) {
+            const diags = traducoes[idiomaAtual].diagnosticos;
+            if (nota <= 30) return diags[0];
+            if (nota <= 55) return diags[1];
+            if (nota <= 75) return diags[2];
+            return diags[3];
+        }
+
         function obterBandeira(sigla) {
             if (!sigla) return "";
             const siglaUpper = sigla.toUpperCase();
@@ -211,7 +216,7 @@
                     <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
                     <p>O algoritmo afere o nível de estresse imposto à nossa capacidade de foco contínuo a partir de três indicadores comportamentais extraídos do Top 20 em alta:</p>
                     <ul>
-                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor @_ esforço mental voluntário.</li>
+                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
                         <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
                         <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
                     </ul>
@@ -274,12 +279,12 @@
             },
             es: {
                 subtitle: "Mapeo y monitoreo estadístico del riesgo de declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
-                manifesto: "El tecnocapitalismo exige que la raza humana evolucione para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
+                manifesto: "El tecnocapitalismo exige que la raza humana evolue para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
-                loading: "Sincronizando datos con la base de datos poblacional...",
+                loading: "Sincronizando datos con la base de datos populacional...",
                 erro: "Error crítico al leer el motor global.",
                 indisponivel: "Evidencias de video no disponibles para esta muestra.",
-                falhaConexao: "Fallo de conexión con la infraestructura.",
+                falhaConexao: "Fallo de conexão con la infraestructura.",
                 coleta: "Última muestra recolectada el:",
                 as: "a las",
                 topVideos: "Evidencias Digitales (Top Videos en Tendencia) en",
@@ -288,7 +293,7 @@
                 diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo focado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
-                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio instabilidad entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
+                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
                     dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
                     terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
                 },
@@ -298,21 +303,8 @@
                     <p>El algoritmo mide el nivel de estrés impuesto a nuestra capacidad de enfoque continuo basándose en tres indicadores conductuales de la lista de los 20 principales elementos en tendencia:</p>
                     <ul>
                         <li><strong>El desagüe del aburrimiento:</strong> Analizamos las tendencias porque reflejan el consumo en piloto automático de las masas. Mapea la mente colectiva durante los períodos de menor esfuerzo mental voluntario.</li>
-                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituado al cambio continuo de tema.</li>
-                        <li><strong>Saturación de dopamina rápida:</strong> Los videos de comedia y los formatos ultra cortos (Shorts) inducen recompensas cerebrales inmediatas. El ranking cuantifica qué tan anestesiado y adaptado biológicamente está cada país a este bombardeo constante.</li>
+                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituada al cambio continuo de tema.</li>
                     </ul>
-                    <p><strong>La Fórmula Matemática del Modelo:</strong></p>
-                    <p>Los datos brutos de la API se procesan a través de una función acumulativa con una línea de base de control fijada en 50 puntos. Las puntuaciones altas acercan al país al umbral del colapso de la atención sostenida:</p>
-                    <div class="formula-box">
-                        Puntuación Inicial = 50 (Estado Basal)<br><br>
-                        IF Tiempo Promedio < 8 minutos ➔ +25 Puntos<br>
-                        IF Tiempo Promedio > 20 minutos ➔ -10 Puntos (Bono)<br><br>
-                        Añadir Penalizaciones por Categoría de Contenido:<br>
-                        ➔ +2.0 por cada video de Comedia (Estímulo Rápido)<br>
-                        ➔ +1.0 por cada video de Entretenimiento (Ruido de Fondo)<br>
-                        ➔ +5.0 por cada Short detectado (Menos de 60 segundos)<br><br>
-                        DISPARADOR CRÍTICO: Si Shorts ≥ 11 videos en el Top 20 ➔ Bloquear Puntuación Final en 95 fijo (Sobredosis Dopaminérgica).
-                    </div>
                 `
             }
         };
@@ -320,7 +312,7 @@
         function mudarIdioma(lang) {
             idiomaAtual = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            if(event && event.target) event.target.classList.add('active');
+            if(window.event && window.event.target) window.event.target.classList.add('active');
             
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
@@ -336,11 +328,6 @@
             document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
 
             document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
-            const btn = document.getElementById("btn-toggle");
-            if (document.getElementById("metodologia-bloco").style.display !== "block") {
-                btn.innerText = lang === 'pt' ? "[ + Metodologia & Cálculo ]" : lang === 'en' ? "[ + Methodology & Calculation ]" : "[ + Metodología y Cálculo ]";
-            }
-
             renderizarRanking();
         }
 
@@ -367,7 +354,7 @@
             const paisesUnicos = {};
 
             dadosValidos.forEach(item => {
-                const nomePais = (item.pais || item.Pais || item.PAIS).toLowerCase(); // REVISADO: unificação para caixa baixa
+                const nomePais = (item.pais || item.Pais || item.PAIS).toLowerCase();
                 if (!paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
             });
 
@@ -381,7 +368,6 @@
                 block.className = "country-block";
                 
                 const nomePaisExibicao = registro.pais.toUpperCase();
-
                 let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${nomePaisExibicao}:</div>`;
                 
                 if (registro.videos_json) {
