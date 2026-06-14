@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Brainrot Index</title>
-    <!-- Biblioteca Chart.js para o Gráfico Histórico Sem Mexer no Banco -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,7 +108,7 @@
 
     <header>
         <div class="lang-selector">
-            <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
+            <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>
         </div>
         <h1>The Brainrot Index</h1>
         <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do nível de apodrecimento cerebral e fragmentação da atenção no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
@@ -146,12 +145,10 @@
             </table>
         </section>
 
-        <!-- Ranking do Momento -->
         <div id="ranking-container">
             <div class="loading">Sincronizando dados com o banco populacional...</div>
         </div>
 
-        <!-- Nova Linha do Tempo Histórica -->
         <section class="chart-section">
             <div id="txt-chart-titulo" class="escala-titulo">Curva de Tendência Geral Acumulada (Média Móvel Exponencial EMA, α=0.2)</div>
             <div class="chart-container">
@@ -163,8 +160,7 @@
     <footer>
         <button id="btn-toggle" class="toggle-btn" onclick="toggleMetodologia()">[ + Metodologia & Cálculo / Methodology & Calculation ]</button>
         <div id="metodologia-bloco" class="metodologia-content">
-            <!-- Injetado dinamicamente via JS -->
-        </div>
+            </div>
     </footer>
 
     <script>
@@ -203,10 +199,10 @@
             const btn = document.getElementById("btn-toggle");
             if (bloco.style.display === "block") {
                 bloco.style.display = "none";
-                btn.innerText = idiomaAtual === 'pt' ? "[ + Metodologia & Cálculo ]" : idiomaAtual === 'en' ? "[ + Methodology & Calculation ]" : "[ + Metodología y Cálculo ]";
+                btn.innerText = idiomaAtual === 'pt' ? "[ + Metodologia & Cálculo ]" : "[ + Methodology & Calculation ]";
             } else {
                 bloco.style.display = "block";
-                btn.innerText = idiomaAtual === 'pt' ? "[ - Fechar / Close ]" : idiomaAtual === 'en' ? "[ - Close ]" : "[ - Cerrar ]";
+                btn.innerText = idiomaAtual === 'pt' ? "[ - Fechar / Close ]" : "[ - Close ]";
             }
         }
 
@@ -237,9 +233,9 @@
                     <p><em>Aviso metodológico: este site é uma provocação artística, computacional e de economia da atenção coletiva. Ele analisa a esteira de consumo do piloto automático das massas.</em></p>
                     <p>O algoritmo processa a grade de tendências individualmente, simulando o saldo de estímulo dopaminérgico imposto ao cérebro do usuário:</p>
                     <ul>
-                        <li><strong>Estouro Indivudual de Shorts:</strong> Vídeos de menos de 60 segundos geram picos rápidos de recompensa. Se a grade for dominada por eles (&ge; 11), a nota é travada imediatamente no nível crítico de 95 pontos.</li>
+                        <li><strong>Estouro Individual de Shorts:</strong> Vídeos de menos de 60 segundos geram picos rápidos de recompensa. Se a grade for dominada por eles (&ge; 11), a nota é travada imediatamente no nível crítico de 95 pontos.</li>
                         <li><strong>O Saldo Atencional:</strong> Em vez de médias distorcidas por anomalias, cada vídeo curto soma penalidades acumulativas (+4.0), enquanto produções de longa duração (&gt; 15 min) reduzem o índice (-1.5), recompensando o foco prolongado.</li>
-                        <li><strong>O Amortecedor Econométrico (EMA):</strong> Para evitar oscilações brutas diárias, o gráfico histórico calcula a Média Móvel Exponencial ($\alpha=0.2$). Isso cria uma curva contínua que revela a real tendência de declínio de atenção sustentada de cada nação.</li>
+                        <li><strong>O Amortecedor Econométrico (EMA):</strong> Para evitar oscilações brutas diárias, o gráfico histórico calcula a Média Móvel Exponencial ($\\alpha=0.2$). Isso cria uma curva contínua que revela a real tendência de declínio de atenção sustentada de cada nação.</li>
                     </ul>
                 `
             },
@@ -264,7 +260,7 @@
                     dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
                 },
-                metodologiaHtml: `<p><strong>What does The Brainrot Index measure?</strong></p><p>It acts as an attention economy dashboard analyzing the mass autopilot stream, factoring cumulative short format penalties (+4.0) against long focus rewards (-1.5), smoothed dynamically by an Exponential Moving Average ($\alpha=0.2$) model.</p>`
+                metodologiaHtml: `<p><strong>What does The Brainrot Index measure?</strong></p><p>It acts as an attention economy dashboard analyzing the mass autopilot stream, factoring cumulative short format penalties (+4.0) against long focus rewards (-1.5), smoothed dynamically by an Exponential Moving Average ($\\alpha=0.2$) model.</p>`
             }
         };
 
@@ -288,29 +284,32 @@
             document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
 
             document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
-            renderizarRanking();
-            construirGraficoHistorico();
+            
+            // Só renderiza se o cache já tiver dados carregados da API
+            if (dadosGlobaisCache && dadosGlobaisCache.length > 0) {
+                renderizarRanking();
+                construirGraficoHistorico();
+            }
         }
 
         function renderizarRanking() {
             const container = document.getElementById("ranking-container");
-            if (dadosGlobaisCache.length === 0) return;
+            if (!dadosGlobaisCache || dadosGlobaisCache.length === 0) return;
 
-            // Filtra e pega a safra mais recente (as primeiras 5 posições do array)
+            // Filtra e valida que a propriedade país ou variações existem no objeto
             const dadosValidos = dadosGlobaisCache.filter(r => r && (r.pais || r.Pais || r.PAIS));
             const ultimosCinco = dadosValidos.slice(0, 5);
 
             const paisesUnicos = {};
             ultimosCinco.forEach(item => {
-                const nomePais = (item.pais || item.Pais || item.PAIS).toLowerCase();
-                if (!paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
+                const nomePais = (item.pais || item.Pais || item.PAIS || "").toLowerCase();
+                if (nomePais && !paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
             });
 
             const dadosFinais = Object.values(paisesUnicos);
             dadosFinais.sort((a, b) => b.pontuacao - a.pontuacao);
 
-            // Atualiza carimbo de hora da última captura
-            if (dadosFinais[0] && dadosFinais[0].created_at) {
+            if (dadosFinais.length > 0 && dadosFinais[0].created_at) {
                 const dataBanco = new Date(dadosFinais[0].created_at);
                 const locale = idiomaAtual === 'en' ? 'en-US' : 'pt-BR';
                 document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataBanco.toLocaleDateString(locale)} ${traducoes[idiomaAtual].as} ${dataBanco.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}`;
@@ -321,18 +320,29 @@
             dadosFinais.forEach(registro => {
                 const block = document.createElement("div");
                 block.className = "country-block";
-                const nomePaisExibicao = registro.pais.toUpperCase();
+                const nomePaisExibicao = (registro.pais || registro.Pais || registro.PAIS || "").toUpperCase();
 
                 let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${nomePaisExibicao}:</div>`;
+                
+                // CORRIGIDO: Try/Catch para isolar falhas de parsing de JSONB/String
+                let listaVideos = [];
                 if (registro.videos_json) {
-                    const listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
+                    try {
+                        listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
+                    } catch (e) {
+                        listaVideos = [];
+                    }
+                }
+
+                if (Array.isArray(listaVideos) && listaVideos.length > 0) {
                     listaVideos.forEach((vid, index) => {
+                        if (!vid) return;
                         htmlVideos += `
                             <div class="video-item">
-                                ${index + 1}. <strong>${vid.titulo}</strong> <span>• ${vid.canal}</span>
+                                ${index + 1}. <strong>${vid.titulo || ''}</strong> <span>• ${vid.canal || ''}</span>
                                 <div class="video-meta">
-                                    <span class="meta-tag">${traducoes[idiomaAtual].metaImpulsividade}: ${vid.impulsividade}</span>
-                                    <span class="meta-tag">${traducoes[idiomaAtual].metaApelo}: ${vid.apelo}</span>
+                                    <span class="meta-tag">${traducoes[idiomaAtual].metaImpulsividade}: ${vid.impulsividade || 'Normal'}</span>
+                                    <span class="meta-tag">${traducoes[idiomaAtual].metaApelo}: ${vid.apelo || 'Padrão'}</span>
                                 </div>
                             </div>`;
                     });
@@ -343,7 +353,7 @@
                 block.innerHTML = `
                     <div class="country-row">
                         <div class="country-info">
-                            <div class="flag-code">${obterBandeira(registro.pais)}${nomePaisExibicao}</div>
+                            <div class="flag-code">${obterBandeira(nomePaisExibicao)}${nomePaisExibicao}</div>
                         </div>
                         <div class="bar-section">
                             <div class="bar-container"><div class="bar-fill" style="width: 0%"></div></div>
@@ -362,23 +372,19 @@
             });
         }
 
-        // MOTOR ESTATÍSTICO: Processa todo o banco via EMA (α = 0.2) ordenando por tempo cronológico
         function construirGraficoHistorico() {
-            if (dadosGlobaisCache.length === 0) return;
+            if (!dadosGlobaisCache || dadosGlobaisCache.length === 0) return;
 
-            // Inverte o cache para processar do passado para o presente
             const historicoCronologico = [...dadosGlobaisCache].reverse();
-            
             const gruposPorData = {};
-            const trackingEma = { "br": 30, "us": 30, "jp": 30, "in": 30, "gb": 30 }; // Estado Basal Inicial
-            const alpha = 0.2; // Fator de Suavização
+            const trackingEma = { "br": 30, "us": 30, "jp": 30, "in": 30, "gb": 30 }; 
+            const alpha = 0.2; 
 
             historicoCronologico.forEach(reg => {
-                if (!reg || !reg.pais || !reg.created_at) return;
-                const p = reg.pais.toLowerCase();
+                if (!reg || !(reg.pais || reg.Pais || reg.PAIS) || !reg.created_at) return;
+                const p = (reg.pais || reg.Pais || reg.PAIS).toLowerCase();
                 if (!trackingEma.hasOwnProperty(p)) return;
 
-                // Aplicação da fórmula econométrica da EMA
                 trackingEma[p] = (reg.pontuacao * alpha) + (trackingEma[p] * (1 - alpha));
 
                 const dataFormatada = new Date(reg.created_at).toLocaleDateString(idiomaAtual === 'en' ? 'en-US' : 'pt-BR', {month: 'numeric', day: 'numeric', hour: '2-digit'});
@@ -390,10 +396,12 @@
             });
 
             const labelsEixoX = Object.keys(gruposPorData);
+            if (labelsEixoX.length === 0) return;
+
             const datasetsGráfico = Object.keys(trackingEma).map(p => {
                 return {
                     label: p.toUpperCase(),
-                    data: labelsEixoX.map(lbl => gruposPorData[lbl][p] || null),
+                    data: labelsEixoX.map(lbl => gruposPorData[lbl][p] !== undefined ? gruposPorData[lbl][p] : null),
                     borderColor: coresPaises[p],
                     backgroundColor: coresPaises[p],
                     borderWidth: 2,
@@ -405,7 +413,9 @@
 
             if (instaciaGrafico) instaciaGrafico.destroy();
 
-            const ctx = document.getElementById('brainrotChart').getContext('2d');
+            const canvas = document.getElementById('brainrotChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             instaciaGrafico = new Chart(ctx, {
                 type: 'line',
                 data: { labels: labelsEixoX, datasets: datasetsGráfico },
@@ -426,10 +436,12 @@
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 if (!response.ok) throw new Error("Erro de conexão");
                 dadosGlobaisCache = await response.json();
-                document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
+                
+                document.getElementById("metodologia-bloco").innerHTML = traducoes[idiomaAtual].metodologiaHtml;
                 renderizarRanking();
                 construirGraficoHistorico();
             } catch (error) {
+                console.error(error);
                 document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
                 document.getElementById("ultima-varredura").innerText = traducoes[idiomaAtual].falhaConexao;
             }
