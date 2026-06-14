@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Darwin Index</title>
+    <title>The Brainrot Index</title>
+    <!-- Biblioteca Chart.js para o Gráfico Histórico Sem Mexer no Banco -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -72,6 +74,10 @@
         .video-meta { font-size: 11px; color: #888888; text-transform: uppercase; font-weight: 700; letter-spacing: 0.02em; margin-top: 2px; }
         .meta-tag { background: #f0f0f0; color: #000000; padding: 1px 5px; font-size: 10px; margin-right: 4px; }
 
+        /* Nova seção para o gráfico econométrico de linhas */
+        .chart-section { margin-top: 60px; margin-bottom: 40px; padding-top: 40px; border-top: 2px solid #000000; }
+        .chart-container { position: relative; width: 100%; height: 350px; margin-top: 20px; }
+
         footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e5e5; }
         .toggle-btn {
             background: none; border: none; font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -105,17 +111,17 @@
         <div class="lang-selector">
             <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
-        <h1>The Darwin Index</h1>
-        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
+        <h1>The Brainrot Index</h1>
+        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do nível de apodrecimento cerebral e fragmentação da atenção no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
         <div id="txt-manifesto" class="manifesto-block">
-            O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
+            O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Brainrot mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
         </div>
-        <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
+        <div id="ultima-varredura" class="timestamp-aviso">Buscando última amostragem dos dados...</div>
     </header>
 
     <main>
         <section class="escala-racional">
-            <div id="txt-escala-titulo" class="escala-titulo">Métricas de Diagnóstico Cognitivo (Escala 0-100)</div>
+            <div id="txt-escala-titulo" class="escala-titulo">Métricas de Degradação Cognitiva (Escala 0-100)</div>
             <table class="escala-tabela">
                 <tr>
                     <td class="td-faixa">00 – 30</td>
@@ -140,15 +146,25 @@
             </table>
         </section>
 
+        <!-- Ranking do Momento -->
         <div id="ranking-container">
-            <div class="loading">Sincronizando dados...</div>
+            <div class="loading">Sincronizando dados com o banco populacional...</div>
         </div>
+
+        <!-- Nova Linha do Tempo Histórica -->
+        <section class="chart-section">
+            <div id="txt-chart-titulo" class="escala-titulo">Curva de Tendência Geral Acumulada (Média Móvel Exponencial EMA, α=0.2)</div>
+            <div class="chart-container">
+                <canvas id="brainrotChart"></canvas>
+            </div>
+        </section>
     </main>
 
     <footer>
         <button id="btn-toggle" class="toggle-btn" onclick="toggleMetodologia()">[ + Metodologia & Cálculo / Methodology & Calculation ]</button>
         <div id="metodologia-bloco" class="metodologia-content">
-            </div>
+            <!-- Injetado dinamicamente via JS -->
+        </div>
     </footer>
 
     <script>
@@ -156,6 +172,7 @@
         
         let idiomaAtual = 'pt';
         let dadosGlobaisCache = [];
+        let instaciaGrafico = null;
 
         const dicionarioBandeiras = {
             "BR": "🇧🇷", "US": "🇺🇸", "JP": "🇯🇵", "IN": "🇮🇳", "GB": "🇬🇧",
@@ -163,7 +180,10 @@
             "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
         };
 
-        // ADICIONADO: Função de diagnóstico traduzida para evitar quebra de escopo
+        const coresPaises = {
+            "br": "#2ecc71", "us": "#3498db", "jp": "#e74c3c", "in": "#f1c40f", "gb": "#9b59b6"
+        };
+
         function obterDiagnostico(nota) {
             const diags = traducoes[idiomaAtual].diagnosticos;
             if (nota <= 30) return diags[0];
@@ -192,9 +212,10 @@
 
         const traducoes = {
             pt: {
-                subtitle: "Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
-                manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
-                escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
+                subtitle: "Mapeamento e monitoramento estatístico do nível de apodrecimento cerebral e fragmentação da atenção no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
+                manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Brainrot mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
+                escalaTitulo: "Métricas de Degradação Cognitiva (Escala 0-100)",
+                chartTitulo: "Curva de Tendência Geral Acumulada (Média Móvel Exponencial EMA, α=0.2)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
                 indisponivel: "Evidências de vídeo indisponíveis para esta amostragem.",
@@ -212,32 +233,21 @@
                     terminal: ["Estágio Terminal", "Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado."]
                 },
                 metodologiaHtml: `
-                    <p><strong>O que o Índice Darwin realmente mede?</strong></p>
-                    <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
-                    <p>O algoritmo afere o nível de estresse imposto à nossa capacidade de foco contínuo a partir de três indicadores comportamentais extraídos do Top 20 em alta:</p>
+                    <p><strong>O que o Índice Brainrot realmente mede?</strong></p>
+                    <p><em>Aviso metodológico: este site é uma provocação artística, computacional e de economia da atenção coletiva. Ele analisa a esteira de consumo do piloto automático das massas.</em></p>
+                    <p>O algoritmo processa a grade de tendências individualmente, simulando o saldo de estímulo dopaminérgico imposto ao cérebro do usuário:</p>
                     <ul>
-                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
-                        <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
-                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
+                        <li><strong>Estouro Indivudual de Shorts:</strong> Vídeos de menos de 60 segundos geram picos rápidos de recompensa. Se a grade for dominada por eles (&ge; 11), a nota é travada imediatamente no nível crítico de 95 pontos.</li>
+                        <li><strong>O Saldo Atencional:</strong> Em vez de médias distorcidas por anomalias, cada vídeo curto soma penalidades acumulativas (+4.0), enquanto produções de longa duração (&gt; 15 min) reduzem o índice (-1.5), recompensando o foco prolongado.</li>
+                        <li><strong>O Amortecedor Econométrico (EMA):</strong> Para evitar oscilações brutas diárias, o gráfico histórico calcula a Média Móvel Exponencial ($\alpha=0.2$). Isso cria uma curva contínua que revela a real tendência de declínio de atenção sustentada de cada nação.</li>
                     </ul>
-                    <p><strong>A Equação Matemática do Modelo:</strong></p>
-                    <p>Os dados brutos coletados da API são submetidos a uma função cumulativa com estado basal de controle fixado em 50 pontos. Pontuações elevadas aproximam o país do limiar de colapso de atenção sustentada:</p>
-                    <div class="formula-box">
-                        Nota Inicial = 50 (Estado Basal)<br><br>
-                        IF Média de Tempo < 8 minutos ➔ +25 Pontos<br>
-                        IF Média de Tempo > 20 minutos ➔ -10 Pontos (Bônus)<br><br>
-                        Adicionar Penalidades por Categoria de Conteúdo:<br>
-                        ➔ +2.0 por cada vídeo de Comédia (Estímulo Rápido)<br>
-                        ➔ +1.0 por cada vídeo de Entretenimento (Ruído de Fundo)<br>
-                        ➔ +5.0 por cada Short detectado (Menos de 60 segundos)<br><br>
-                        GATILHO CRÍTICO: Se Shorts ≥ 11 vídeos no Top 20 ➔ Travar Nota Final em 95 fixo (Overdose Dopaminérgica).
-                    </div>
                 `
             },
             en: {
-                subtitle: "Statistical mapping and monitoring of the risk of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
-                manifesto: "Techno-capitalism requires the human race to evolve in order to adapt to a highly stimulating content environment. The Darwin Index maps how close each nation is to making this \"evolution\" biologically viable.",
-                escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
+                subtitle: "Statistical mapping and monitoring of the level of brainrot and attention fragmentation across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
+                manifesto: "Techno-capitalism requires the human race to evolve in order to adapt to a highly stimulating content environment. The Brainrot Index maps how close each nation is to making this \"evolution\" biologically viable.",
+                escalaTitulo: "Cognitive Degradation Metrics (0-100 Scale)",
+                chartTitulo: "Accumulated General Trend Curve (Exponential Moving Average EMA, α=0.2)",
                 loading: "Synchronizing data with the population database...",
                 erro: "Critical error reading the global engine.",
                 indisponivel: "Video evidence unavailable for this sampling.",
@@ -254,58 +264,7 @@
                     dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
                 },
-                metodologiaHtml: `
-                    <p><strong>What does The Darwin Index actually measure?</strong></p>
-                    <p><em>Methodological Notice: This site is not an official scientific study and does not measure intrinsic intelligence or IQ. It is an artistic and computational provocation on how digital architecture shapes collective attention.</em></p>
-                    <p>The algorithm measures the level of stress imposed on our capacity for continuous focus using three behavioral indicators from the Top 20 Trending list:</p>
-                    <ul>
-                        <li><strong>The outlet of boredom:</strong> We analyze the top views because they reflect mass consumption on autopilot. It maps the collective mind during periods of minimum voluntary mental effort.</li>
-                        <li><strong>The patience clock:</strong> When the average retention time drops below 8 minutes, severe focus fragmentation is assumed, indicating a mind accustomed to continuous topic switching.</li>
-                        <li><strong>Fast dopamine saturation:</strong> Comedy videos and ultra-short formats (Shorts) induce immediate brain rewards. The ranking quantifies how anesthetized and biologically adapted each country is to this continuous bombardment.</li>
-                    </ul>
-                    <p><strong>The Mathematical Formula:</strong></p>
-                    <p>The raw data from the API is run through a cumulative function with a control baseline set at 50 points. High scores move a country closer to the threshold of sustained attention collapse:</p>
-                    <div class="formula-box">
-                        Initial Score = 50 (Baseline State)<br><br>
-                        IF Average Time < 8 minutes ➔ +25 Points<br>
-                        IF Average Time > 20 minutes ➔ -10 Points (Bonus)<br><br>
-                        Add Category-Based Content Penalties:<br>
-                        ➔ +2.0 for each Comedy video (Fast Stimulus)<br>
-                        ➔ +1.0 for each Entertainment video (Background Noise)<br>
-                        ➔ +5.0 for each Short detected (Under 60 seconds)<br><br>
-                        CRITICAL TRIGGER: If Shorts ≥ 11 videos in the Top 20 ➔ Hard lock Final Score at 95 (Dopaminergic Overdose).
-                    </div>
-                `
-            },
-            es: {
-                subtitle: "Mapeo y monitoreo estadístico del riesgo de declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
-                manifesto: "El tecnocapitalismo exige que la raza humana evolue para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
-                escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
-                loading: "Sincronizando datos con la base de datos populacional...",
-                erro: "Error crítico al leer el motor global.",
-                indisponivel: "Evidencias de video no disponibles para esta muestra.",
-                falhaConexao: "Fallo de conexão con la infraestructura.",
-                coleta: "Última muestra recolectada el:",
-                as: "a las",
-                topVideos: "Evidencias Digitales (Top Videos en Tendencia) en",
-                metaImpulsividade: "Impulsividad de Clic",
-                metaApelo: "Apelación del Título",
-                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
-                escalaDesc: {
-                    lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo focado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
-                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
-                    dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
-                    terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
-                },
-                metodologiaHtml: `
-                    <p><strong>¿Qué mide realmente el Índice Darwin?</strong></p>
-                    <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula a la atención colectiva.</em></p>
-                    <p>El algoritmo mide el nivel de estrés impuesto a nuestra capacidad de enfoque continuo basándose en tres indicadores conductuales de la lista de los 20 principales elementos en tendencia:</p>
-                    <ul>
-                        <li><strong>El desagüe del aburrimiento:</strong> Analizamos las tendencias porque reflejan el consumo en piloto automático de las masas. Mapea la mente colectiva durante los períodos de menor esfuerzo mental voluntario.</li>
-                        <li><strong>El reloj de la paciencia:</strong> Cuando el tiempo promedio de retención cae por debajo de los 8 minutos, se asume una fragmentación severa del enfoque, lo que indica una mente habituada al cambio continuo de tema.</li>
-                    </ul>
-                `
+                metodologiaHtml: `<p><strong>What does The Brainrot Index measure?</strong></p><p>It acts as an attention economy dashboard analyzing the mass autopilot stream, factoring cumulative short format penalties (+4.0) against long focus rewards (-1.5), smoothed dynamically by an Exponential Moving Average ($\alpha=0.2$) model.</p>`
             }
         };
 
@@ -317,6 +276,7 @@
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
+            document.getElementById("txt-chart-titulo").innerText = traducoes[lang].chartTitulo;
             
             document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
             document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
@@ -329,31 +289,19 @@
 
             document.getElementById("metodologia-bloco").innerHTML = traducoes[lang].metodologiaHtml;
             renderizarRanking();
+            construirGraficoHistorico();
         }
 
         function renderizarRanking() {
             const container = document.getElementById("ranking-container");
-            
-            if (dadosGlobaisCache.length === 0) {
-                container.innerHTML = `<div class='loading'>${traducoes[idiomaAtual].loading}</div>`;
-                return;
-            }
+            if (dadosGlobaisCache.length === 0) return;
 
-            if (dadosGlobaisCache[0] && dadosGlobaisCache[0].created_at) {
-                const dataBanco = new Date(dadosGlobaisCache[0].created_at);
-                let locale = 'pt-BR';
-                if (idiomaAtual === 'en') locale = 'en-US';
-                if (idiomaAtual === 'es') locale = 'es-ES';
-                
-                const dataFormatada = dataBanco.toLocaleDateString(locale);
-                const horaFormatada = dataBanco.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
-                document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataFormatada} ${traducoes[idiomaAtual].as} ${horaFormatada}`;
-            }
-
+            // Filtra e pega a safra mais recente (as primeiras 5 posições do array)
             const dadosValidos = dadosGlobaisCache.filter(r => r && (r.pais || r.Pais || r.PAIS));
-            const paisesUnicos = {};
+            const ultimosCinco = dadosValidos.slice(0, 5);
 
-            dadosValidos.forEach(item => {
+            const paisesUnicos = {};
+            ultimosCinco.forEach(item => {
                 const nomePais = (item.pais || item.Pais || item.PAIS).toLowerCase();
                 if (!paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
             });
@@ -361,15 +309,21 @@
             const dadosFinais = Object.values(paisesUnicos);
             dadosFinais.sort((a, b) => b.pontuacao - a.pontuacao);
 
+            // Atualiza carimbo de hora da última captura
+            if (dadosFinais[0] && dadosFinais[0].created_at) {
+                const dataBanco = new Date(dadosFinais[0].created_at);
+                const locale = idiomaAtual === 'en' ? 'en-US' : 'pt-BR';
+                document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataBanco.toLocaleDateString(locale)} ${traducoes[idiomaAtual].as} ${dataBanco.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}`;
+            }
+
             container.innerHTML = "";
 
             dadosFinais.forEach(registro => {
                 const block = document.createElement("div");
                 block.className = "country-block";
-                
                 const nomePaisExibicao = registro.pais.toUpperCase();
+
                 let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${nomePaisExibicao}:</div>`;
-                
                 if (registro.videos_json) {
                     const listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
                     listaVideos.forEach((vid, index) => {
@@ -408,13 +362,73 @@
             });
         }
 
+        // MOTOR ESTATÍSTICO: Processa todo o banco via EMA (α = 0.2) ordenando por tempo cronológico
+        function construirGraficoHistorico() {
+            if (dadosGlobaisCache.length === 0) return;
+
+            // Inverte o cache para processar do passado para o presente
+            const historicoCronologico = [...dadosGlobaisCache].reverse();
+            
+            const gruposPorData = {};
+            const trackingEma = { "br": 30, "us": 30, "jp": 30, "in": 30, "gb": 30 }; // Estado Basal Inicial
+            const alpha = 0.2; // Fator de Suavização
+
+            historicoCronologico.forEach(reg => {
+                if (!reg || !reg.pais || !reg.created_at) return;
+                const p = reg.pais.toLowerCase();
+                if (!trackingEma.hasOwnProperty(p)) return;
+
+                // Aplicação da fórmula econométrica da EMA
+                trackingEma[p] = (reg.pontuacao * alpha) + (trackingEma[p] * (1 - alpha));
+
+                const dataFormatada = new Date(reg.created_at).toLocaleDateString(idiomaAtual === 'en' ? 'en-US' : 'pt-BR', {month: 'numeric', day: 'numeric', hour: '2-digit'});
+                
+                if (!gruposPorData[dataFormatada]) {
+                    gruposPorData[dataFormatada] = {};
+                }
+                gruposPorData[dataFormatada][p] = Math.round(trackingEma[p]);
+            });
+
+            const labelsEixoX = Object.keys(gruposPorData);
+            const datasetsGráfico = Object.keys(trackingEma).map(p => {
+                return {
+                    label: p.toUpperCase(),
+                    data: labelsEixoX.map(lbl => gruposPorData[lbl][p] || null),
+                    borderColor: coresPaises[p],
+                    backgroundColor: coresPaises[p],
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    tension: 0.3,
+                    fill: false
+                };
+            });
+
+            if (instaciaGrafico) instaciaGrafico.destroy();
+
+            const ctx = document.getElementById('brainrotChart').getContext('2d');
+            instaciaGrafico = new Chart(ctx, {
+                type: 'line',
+                data: { labels: labelsEixoX, datasets: datasetsGráfico },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } } } },
+                    scales: {
+                        y: { min: 0, max: 100, grid: { color: '#f0f0f0' }, labels: { font: { size: 10 } } },
+                        x: { grid: { display: false }, labels: { font: { size: 9 } } }
+                    }
+                }
+            });
+        }
+
         async function carregarDadosIniciais() {
             try {
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
-                if (!response.ok) throw new Error("Erro na rede");
+                if (!response.ok) throw new Error("Erro de conexão");
                 dadosGlobaisCache = await response.json();
                 document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
                 renderizarRanking();
+                construirGraficoHistorico();
             } catch (error) {
                 document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
                 document.getElementById("ultima-varredura").innerText = traducoes[idiomaAtual].falhaConexao;
