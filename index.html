@@ -57,8 +57,8 @@
     </footer>
 
     <script>
-        // Endpoint atualizado para a rota v3
-        const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v3";
+        // Endpoint atualizado para a v5
+        const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v5";
         const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
 
         function obterDiagnostico(nota) {
@@ -90,12 +90,17 @@
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 const todosDados = await response.json();
                 
-                const dadosValidos = todosDados.filter(r => r.pais);
+                // Tolera o formato do país vindo minúsculo ou maiúsculo
+                const dadosValidos = todosDados.filter(r => r.pais || r.Pais || r.PAIS);
                 const paisesUnicos = {};
 
                 dadosValidos.forEach(item => {
-                    if (!paisesUnicos[item.pais]) {
-                        paisesUnicos[item.pais] = item;
+                    const nomePais = item.pais || item.Pais || item.PAIS;
+                    if (!paisesUnicos[nomePais]) {
+                        paisesUnicos[nomePais] = {
+                            pais: nomePais,
+                            pontuacao: item.pontuacao
+                        };
                     }
                 });
 
