@@ -14,6 +14,17 @@
         header { margin-bottom: 60px; border-bottom: 2px solid #000000; padding-bottom: 20px; }
         h1 { font-size: 48px; font-weight: 700; line-height: 1; text-transform: uppercase; }
         .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; }
+        
+        /* Estilo do aviso da última varredura */
+        .timestamp-aviso {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #ff0000; /* Um tom de alerta elegante */
+            margin-top: 14px;
+        }
+
         #ranking-container { margin-top: 40px; }
         .loading { font-size: 16px; font-weight: 500; animation: blink 1s infinite; text-transform: uppercase; letter-spacing: 0.05em; }
         .country-block { border-bottom: 1px solid #e5e5e5; padding: 24px 0; }
@@ -43,7 +54,10 @@
 
     <header>
         <h1>The Darwin Index</h1>
-        <div class="subtitle">Mapeamento em tempo real do declínio cognitivo global através do Top 20 do YouTube.</div>
+        <!-- Ajustado: Removemos o termo "tempo real" para maior precisão metodológica -->
+        <div class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.</div>
+        <!-- Espaço reservado para a data e hora que o script vai preencher -->
+        <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
     </header>
 
     <main>
@@ -57,7 +71,7 @@
     </footer>
 
     <script>
-        // Endpoint atualizado para a v5
+        // Endpoint conectado à v5
         const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v5";
         const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
 
@@ -90,9 +104,21 @@
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 const todosDados = await response.json();
                 
-                // Tolera o formato do país vindo minúsculo ou maiúsculo
                 const dadosValidos = todosDados.filter(r => r.pais || r.Pais || r.PAIS);
                 const paisesUnicos = {};
+
+                // Captura a data de criação do registro mais recente encontrado no banco
+                if (dadosValidos.length > 0 && dadosValidos[0].created_at) {
+                    const dataBanco = new Date(dadosValidos[0].created_at);
+                    
+                    // Formata a data para o padrão do Brasil (DD/MM/AAAA às HH:MM)
+                    const dataFormatada = dataBanco.toLocaleDateString('pt-BR');
+                    const horaFormatada = dataBanco.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    document.getElementById("ultima-varredura").innerText = `Última amostragem coletada em: ${dataFormatada} às ${horaFormatada}`;
+                } else {
+                    document.getElementById("ultima-varredura").innerText = "Dados históricos de varredura indisponíveis.";
+                }
 
                 dadosValidos.forEach(item => {
                     const nomePais = item.pais || item.Pais || item.PAIS;
@@ -138,6 +164,7 @@
 
             } catch (error) {
                 document.getElementById("ranking-container").innerHTML = "<div class='loading'>Erro crítico ao ler o motor global.</div>";
+                document.getElementById("ultima-varredura").innerText = "Falha de conexão com a infraestrutura.";
             }
         }
         carregarRanking();
