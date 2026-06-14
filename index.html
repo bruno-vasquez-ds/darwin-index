@@ -189,7 +189,7 @@
 
     <script>
         const SUPABASE_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/rest/v1/historico_darwin";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJissIjoic3VwYWJhc2UiLCJyZWYiOiJ5bmx4b2J3d3dhcGtib2VsZG95YiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzgxNDE0MDY5LCJleHAiOjIwOTY5OTAwNjl9.bJBZY6mfE2CQgOBh-8vW2wWOQhFjRFUm32VcnrD6-SM";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubHhvYnd3d2Fwa2JvZWxkb3liIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTQwNjksImV4cCI6MjA5Njk5MDA2OX0.bJBZY6mfE2CQgOBh-8vW2wWOQhFjRFUm32VcnrD6-SM";
         const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
 
         function obterDiagnostico(nota) {
@@ -224,7 +224,6 @@
 
         async function carregarRanking() {
             try {
-                // Adicionado um "timestamp" (?t=...) na URL para quebrar o cache do navegador e da Vercel
                 const response = await fetch(`${SUPABASE_URL}?order=id.desc&limit=50&t=${new Date().getTime()}`, {
                     headers: {
                         "apikey": SUPABASE_KEY,
