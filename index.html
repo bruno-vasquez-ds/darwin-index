@@ -154,7 +154,7 @@
     </footer>
 
     <script>
-        // CORRIGIDO: Agora apontando explicitamente para a função v6 no Supabase
+        // REVISADO: Endpoint da v6 fixado perfeitamente
         const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v6";
         
         let idiomaAtual = 'pt';
@@ -166,7 +166,9 @@
             "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
         };
 
+        // REVISADO: Proteção contra caixa baixa automática vinda do banco
         function obterBandeira(sigla) {
+            if (!sigla) return "";
             const siglaUpper = sigla.toUpperCase();
             return dicionarioBandeiras[siglaUpper] ? `<span class="flag-emoji">${dicionarioBandeiras[siglaUpper]}</span>` : "";
         }
@@ -209,7 +211,7 @@
                     <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
                     <p>O algoritmo afere o nível de estresse imposto à nossa capacidade de foco contínuo a partir de três indicadores comportamentais extraídos do Top 20 em alta:</p>
                     <ul>
-                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
+                        <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor @_ esforço mental voluntário.</li>
                         <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
                         <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
                     </ul>
@@ -283,10 +285,10 @@
                 topVideos: "Evidencias Digitales (Top Videos en Tendencia) en",
                 metaImpulsividade: "Impulsividad de Clic",
                 metaApelo: "Apelación del Título",
-                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miseráveis Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
+                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo focado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
-                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
+                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio instabilidad entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
                     dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
                     terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
                 },
@@ -318,7 +320,7 @@
         function mudarIdioma(lang) {
             idiomaAtual = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if(event && event.target) event.target.classList.add('active');
             
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
@@ -350,7 +352,7 @@
                 return;
             }
 
-            if (dadosGlobaisCache[0].created_at) {
+            if (dadosGlobaisCache[0] && dadosGlobaisCache[0].created_at) {
                 const dataBanco = new Date(dadosGlobaisCache[0].created_at);
                 let locale = 'pt-BR';
                 if (idiomaAtual === 'en') locale = 'en-US';
@@ -361,11 +363,11 @@
                 document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataFormatada} ${traducoes[idiomaAtual].as} ${horaFormatada}`;
             }
 
-            const dadosValidos = dadosGlobaisCache.filter(r => r.pais || r.Pais || r.PAIS);
+            const dadosValidos = dadosGlobaisCache.filter(r => r && (r.pais || r.Pais || r.PAIS));
             const paisesUnicos = {};
 
             dadosValidos.forEach(item => {
-                const nomePais = item.pais || item.Pais || item.PAIS;
+                const nomePais = (item.pais || item.Pais || item.PAIS).toLowerCase(); // REVISADO: unificação para caixa baixa
                 if (!paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
             });
 
@@ -377,8 +379,10 @@
             dadosFinais.forEach(registro => {
                 const block = document.createElement("div");
                 block.className = "country-block";
+                
+                const nomePaisExibicao = registro.pais.toUpperCase();
 
-                let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${registro.pais.toUpperCase()}:</div>`;
+                let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${nomePaisExibicao}:</div>`;
                 
                 if (registro.videos_json) {
                     const listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
@@ -399,7 +403,7 @@
                 block.innerHTML = `
                     <div class="country-row">
                         <div class="country-info">
-                            <div class="flag-code">${obterBandeira(registro.pais)}${registro.pais.toUpperCase()}</div>
+                            <div class="flag-code">${obterBandeira(registro.pais)}${nomePaisExibicao}</div>
                         </div>
                         <div class="bar-section">
                             <div class="bar-container"><div class="bar-fill" style="width: 0%"></div></div>
@@ -411,13 +415,17 @@
                 `;
 
                 container.appendChild(block);
-                setTimeout(() => { block.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`; }, 100);
+                setTimeout(() => { 
+                    const fill = block.querySelector(".bar-fill");
+                    if(fill) fill.style.width = `${registro.pontuacao}%`; 
+                }, 100);
             });
         }
 
         async function carregarDadosIniciais() {
             try {
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("Erro na rede");
                 dadosGlobaisCache = await response.json();
                 document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
                 renderizarRanking();
