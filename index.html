@@ -11,21 +11,74 @@
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             letter-spacing: -0.02em; padding: 80px 40px; max-width: 800px; margin: 0 auto;
         }
-        header { margin-bottom: 60px; border-bottom: 2px solid #000000; padding-bottom: 20px; }
+        header { margin-bottom: 40px; border-bottom: 2px solid #000000; padding-bottom: 20px; position: relative; }
         h1 { font-size: 48px; font-weight: 700; line-height: 1; text-transform: uppercase; }
-        .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; }
+        .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; padding-right: 140px; }
         
-        /* Estilo do aviso da última varredura */
+        /* Seletor de Idioma Minimalista */
+        .lang-selector {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888888;
+        }
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #888888;
+            cursor: pointer;
+            padding: 0 4px;
+            font-family: inherit;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .lang-btn.active {
+            color: #000000;
+            border-bottom: 1px solid #000000;
+        }
+        .lang-btn:hover { color: #000000; }
+
         .timestamp-aviso {
             font-size: 11px;
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.05em;
-            color: #ff0000; /* Um tom de alerta elegante */
+            color: #ff0000;
             margin-top: 14px;
         }
 
-        #ranking-container { margin-top: 40px; }
+        .escala-racional {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .escala-titulo {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #000000;
+            margin-bottom: 16px;
+        }
+        .escala-tabela {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .escala-tabela tr { border-bottom: 1px dashed #f0f0f0; }
+        .escala-tabela tr:last-child { border-bottom: none; }
+        .escala-tabela td { padding: 10px 0; vertical-align: top; }
+        .td-faixa { width: 90px; font-weight: 700; color: #000000; }
+        .td-diagnostico { width: 210px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+        .td-descricao { color: #555555; }
+
+        #ranking-container { margin-top: 20px; }
         .loading { font-size: 16px; font-weight: 500; animation: blink 1s infinite; text-transform: uppercase; letter-spacing: 0.05em; }
         .country-block { border-bottom: 1px solid #e5e5e5; padding: 24px 0; }
         .country-block:last-child { border-bottom: 2px solid #000000; }
@@ -47,39 +100,160 @@
             body { padding: 40px 20px; } h1 { font-size: 32px; } .country-row { gap: 16px; }
             .country-info { width: 50px; } .flag-code { font-size: 20px; } .score { font-size: 22px; width: 50px; }
             .top-videos { padding-left: 50px; }
+            .escala-tabela td { display: block; width: 100%; padding: 4px 0; }
+            .td-faixa { font-size: 11px; }
+            .lang-selector { position: relative; margin-bottom: 20px; text-align: left; }
+            .subtitle { padding-right: 0; }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <div class="lang-selector">
+            <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
+        </div>
         <h1>The Darwin Index</h1>
-        <!-- Ajustado: Removemos o termo "tempo real" para maior precisão metodológica -->
-        <div class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.</div>
-        <!-- Espaço reservado para a data e hora que o script vai preencher -->
+        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.</div>
         <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
     </header>
 
     <main>
+        <section class="escala-racional">
+            <div id="txt-escala-titulo" class="escala-titulo">Métricas de Diagnóstico Cognitivo (Escala 0-100)</div>
+            <table class="escala-tabela">
+                <tr>
+                    <td class="td-faixa">00 – 30</td>
+                    <td id="diag-lucido" class="td-diagnostico">Lúcidos (Baixo Risco)</td>
+                    <td id="desc-lucido" class="td-descricao">Ecossistema saudável. Predomínio de conteúdos de longa duração, consumo focado, alta retenção de tópicos complexos e imunidade a loops de dopamina rápida.</td>
+                </tr>
+                <tr>
+                    <td class="td-faixa">31 – 55</td>
+                    <td id="diag-miseravel" class="td-diagnostico">Miseráveis Cognitivos</td>
+                    <td id="desc-miseravel" class="td-descricao">Estado basal da população conectada moderna. Equilíbrio instável entre consumo útil e entretenimento passivo. Foco linear preservado, mas altamente vulnerável.</td>
+                </tr>
+                <tr>
+                    <td class="td-faixa">56 – 75</td>
+                    <td id="diag-dopado" class="td-diagnostico">Dopados por Algoritmo</td>
+                    <td id="desc-dopado" class="td-descricao">Fragmentação severa de foco. Grade de atenção tomada por esquetes de comédia rápida e ruído cultural. Tempo de foco contínuo severamente reduzido.</td>
+                </tr>
+                <tr>
+                    <td class="td-faixa">76 – 100</td>
+                    <td id="diag-terminal" class="td-diagnostico" style="color: #ff0000;">Estágio Terminal</td>
+                    <td id="desc-terminal" class="td-descricao">Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado.</td>
+                </tr>
+            </table>
+        </section>
+
         <div id="ranking-container">
-            <div class="loading">Sincronizando dados com o banco de dados populacional...</div>
+            <div class="loading">Sincronizando dados...</div>
         </div>
     </main>
 
     <footer>
-        <p><strong>Metodologia:</strong> Algoritmo baseado em Ecologia de Atenção Coletiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalidades aplicadas para tempos de foco inferiores a 8 minutos e consumo de Shorts/Brain Rot. Recompensa (Atenção de Platina) para focos consistentes acima de 20 minutos.</p>
+        <p id="txt-metodologia"><strong>Metodologia:</strong> Algoritmo baseado em Ecologia de Atenção Coletiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalidades aplicadas para tempos de foco inferiores a 8 minutos e consumo de Shorts/Brain Rot. Recompensa (Atenção de Platina) para focos consistentes acima de 20 minutos.</p>
     </footer>
 
     <script>
-        // Endpoint conectado à v5
         const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v5";
         const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
+        
+        let idiomaAtual = 'pt';
+        let dadosGlobaisCache = [];
+
+        const traducoes = {
+            pt: {
+                subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.",
+                escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
+                loading: "Sincronizando dados com o banco de dados populacional...",
+                erro: "Erro crítico ao ler o motor global.",
+                indisponivel: "Dados históricos de varredura indisponíveis.",
+                falhaConexao: "Falha de conexão com a infraestrutura.",
+                coleta: "Última amostragem coletada em:",
+                as: "às",
+                topVideos: "Top 3 Vídeos em Alta em",
+                carregandoEvidencias: "Carregando evidências...",
+                metodologia: "<strong>Metodologia:</strong> Algoritmo baseado em Ecologia de Atenção Coletiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalidades aplicadas para tempos de foco inferiores a 8 minutos e consumo de Shorts/Brain Rot. Recompensa (Atenção de Platina) para focos consistentes acima de 20 minutos.",
+                diagnosticos: ["Lúcidos (Baixo Risco)", "Miseráveis Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estágio Terminal (Idiocracia)"],
+                escalaDesc: {
+                    lucido: ["Lúcidos (Baixo Risco)", "Ecossistema saudável. Predomínio de conteúdos de longa duração, consumo focado, alta retenção de tópicos complexos e imunidade a loops de dopamina rápida."],
+                    miseravel: ["Miseráveis Cognitivos", "Estado basal da população conectada moderna. Equilíbrio instável entre consumo útil e entretenimento passivo. Foco linear preservado, mas altamente vulnerável."],
+                    dopado: ["Dopados por Algoritmo", "Fragmentação severa de foco. Grade de atenção tomada por esquetes de comédia rápida e ruído cultural. Tempo de foco contínuo severamente reduzido."],
+                    terminal: ["Estágio Terminal", "Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado."]
+                }
+            },
+            en: {
+                subtitle: "Statistical mapping and monitoring of global cognitive decline through YouTube's Top 20 Trending.",
+                escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
+                loading: "Synchronizing data with the population database...",
+                erro: "Critical error reading the global engine.",
+                indisponivel: "Historical scan data unavailable.",
+                falhaConexao: "Infrastructure connection failure.",
+                coleta: "Last sample collected on:",
+                as: "at",
+                topVideos: "Top 3 Trending Videos in",
+                carregandoEvidencias: "Loading evidence...",
+                metodologia: "<strong>Methodology:</strong> Algorithm based on Collective Attention Ecology (Lorenz-Spreen et al., Nature). Scale from 0 to 100. Penalties applied for focus times under 8 minutes and Shorts/Brain Rot consumption. Reward (Platinum Attention) for consistent focus above 20 minutes.",
+                diagnosticos: ["Lucid (Low Risk)", "Cognitive Miserables (Baseline)", "Algorithm Doped (Fragmented)", "Terminal Stage (Idiocracy)"],
+                escalaDesc: {
+                    lucido: ["Lucid (Low Risk)", "Healthy ecosystem. Predominance of long-form content, focused consumption, high retention of complex topics, and immunity to fast dopamine loops."],
+                    miseravel: ["Cognitive Miserables", "Baseline state of the modern connected population. Unstable balance between useful consumption and passive entertainment. Linear focus preserved but highly vulnerable."],
+                    dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
+                    terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
+                }
+            },
+            es: {
+                subtitle: "Mapeo y monitoreo estadístico del declive cognitivo global a través del Top 20 de Tendencias de YouTube.",
+                escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
+                loading: "Sincronizando datos con la base de datos poblacional...",
+                erro: "Error crítico al leer el motor global.",
+                indisponivel: "Datos históricos de escaneo no disponibles.",
+                falhaConexao: "Fallo de conexión con la infraestructura.",
+                coleta: "Última muestra recolectada el:",
+                as: "a las",
+                topVideos: "Top 3 Videos en Tendencia en",
+                carregandoEvidencias: "Cargando evidencias...",
+                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
+                diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
+                escalaDesc: {
+                    lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo enfocado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
+                    miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
+                    dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
+                    terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
+                }
+            }
+        };
 
         function obterDiagnostico(nota) {
-            if (nota <= 30) return "Lúcidos (Baixo Risco)";
-            if (nota <= 55) return "Miseráveis Cognitivos (Estado Basal)";
-            if (nota <= 75) return "Dopados por Algoritmo (Fragmentados)";
-            return "Estágio Terminal (Idiocracia)";
+            const arr = traducoes[idiomaAtual].diagnosticos;
+            if (nota <= 30) return arr[0];
+            if (nota <= 55) return arr[1];
+            if (nota <= 75) return arr[2];
+            return arr[3];
+        }
+
+        function mudarIdioma(lang) {
+            idiomaAtual = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Traduz textos estáticos
+            document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
+            document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
+            document.getElementById("txt-metodologia").innerHTML = traducoes[lang].metodologia;
+            
+            // Traduz a tabela da escala
+            document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
+            document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
+            document.getElementById("diag-miseravel").innerText = traducoes[lang].escalaDesc.miseravel[0];
+            document.getElementById("desc-miseravel").innerText = traducoes[lang].escalaDesc.miseravel[1];
+            document.getElementById("diag-dopado").innerText = traducoes[lang].escalaDesc.dopado[0];
+            document.getElementById("desc-dopado").innerText = traducoes[lang].escalaDesc.dopado[1];
+            document.getElementById("diag-terminal").innerText = traducoes[lang].escalaDesc.terminal[0];
+            document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
+
+            // Renderiza o ranking novamente com o novo idioma
+            renderizarRanking();
         }
 
         async function buscarTopVideos(pais, elementoDestino) {
@@ -89,7 +263,7 @@
                 const dados = await res.json();
                 
                 if (dados.items && dados.items.length > 0) {
-                    let htmlVideos = `<div class="top-videos-title">Top 3 Vídeos em Alta Em ${pais}:</div>`;
+                    let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${pais}:</div>`;
                     dados.items.forEach((item, index) => {
                         htmlVideos += `<div class="video-item">${index + 1}. <strong>${item.snippet.title}</strong> <span>• ${item.snippet.channelTitle}</span></div>`;
                     });
@@ -99,75 +273,75 @@
             } catch (e) { console.error(e); }
         }
 
-        async function carregarRanking() {
+        function renderizarRanking() {
+            const container = document.getElementById("ranking-container");
+            
+            if (dadosGlobaisCache.length === 0) {
+                container.innerHTML = `<div class='loading'>${traducoes[idiomaAtual].loading}</div>`;
+                return;
+            }
+
+            // Atualiza o carimbo de data
+            if (dadosGlobaisCache[0].created_at) {
+                const dataBanco = new Date(dadosGlobaisCache[0].created_at);
+                let locale = 'pt-BR';
+                if (idiomaAtual === 'en') locale = 'en-US';
+                if (idiomaAtual === 'es') locale = 'es-ES';
+                
+                const dataFormatada = dataBanco.toLocaleDateString(locale);
+                const horaFormatada = dataBanco.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                document.getElementById("ultima-varredura").innerText = `${traducoes[idiomaAtual].coleta} ${dataFormatada} ${traducoes[idiomaAtual].as} ${horaFormatada}`;
+            }
+
+            const dadosValidos = dadosGlobaisCache.filter(r => r.pais || r.Pais || r.PAIS);
+            const paisesUnicos = {};
+
+            dadosValidos.forEach(item => {
+                const nomePais = item.pais || item.Pais || item.PAIS;
+                if (!paisesUnicos[nomePais]) {
+                    paisesUnicos[nomePais] = item;
+                }
+            });
+
+            const dadosFinais = Object.values(paisesUnicos);
+            dadosFinais.sort((a, b) => b.pontuacao - a.pontuacao);
+
+            container.innerHTML = "";
+
+            dadosFinais.forEach(registro => {
+                const block = document.createElement("div");
+                block.className = "country-block";
+
+                block.innerHTML = `
+                    <div class="country-row">
+                        <div class="country-info"><div class="flag-code">${registro.pais}</div></div>
+                        <div class="bar-section">
+                            <div class="bar-container"><div class="bar-fill" style="width: 0%"></div></div>
+                            <div class="diagnostico">${obterDiagnostico(registro.pontuacao)}</div>
+                        </div>
+                        <div class="score">${registro.pontuacao}</div>
+                    </div>
+                    <div class="top-videos" id="videos-${registro.pais}"><div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].carregandoEvidencias}</div></div>
+                `;
+
+                container.appendChild(block);
+                setTimeout(() => { block.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`; }, 100);
+                buscarTopVideos(registro.pais, block.querySelector(`#videos-${registro.pais}`));
+            });
+        }
+
+        async function carregarDadosIniciais() {
             try {
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
-                const todosDados = await response.json();
-                
-                const dadosValidos = todosDados.filter(r => r.pais || r.Pais || r.PAIS);
-                const paisesUnicos = {};
-
-                // Captura a data de criação do registro mais recente encontrado no banco
-                if (dadosValidos.length > 0 && dadosValidos[0].created_at) {
-                    const dataBanco = new Date(dadosValidos[0].created_at);
-                    
-                    // Formata a data para o padrão do Brasil (DD/MM/AAAA às HH:MM)
-                    const dataFormatada = dataBanco.toLocaleDateString('pt-BR');
-                    const horaFormatada = dataBanco.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                    
-                    document.getElementById("ultima-varredura").innerText = `Última amostragem coletada em: ${dataFormatada} às ${horaFormatada}`;
-                } else {
-                    document.getElementById("ultima-varredura").innerText = "Dados históricos de varredura indisponíveis.";
-                }
-
-                dadosValidos.forEach(item => {
-                    const nomePais = item.pais || item.Pais || item.PAIS;
-                    if (!paisesUnicos[nomePais]) {
-                        paisesUnicos[nomePais] = {
-                            pais: nomePais,
-                            pontuacao: item.pontuacao
-                        };
-                    }
-                });
-
-                const dadosFinais = Object.values(paisesUnicos);
-                dadosFinais.sort((a, b) => b.pontuacao - a.pontuacao);
-
-                const container = document.getElementById("ranking-container");
-                container.innerHTML = "";
-
-                if (dadosFinais.length === 0) {
-                    container.innerHTML = "<div class='loading'>Aguardando processamento das amostras...</div>";
-                    return;
-                }
-
-                dadosFinais.forEach(registro => {
-                    const block = document.createElement("div");
-                    block.className = "country-block";
-
-                    block.innerHTML = `
-                        <div class="country-row">
-                            <div class="country-info"><div class="flag-code">${registro.pais}</div></div>
-                            <div class="bar-section">
-                                <div class="bar-container"><div class="bar-fill" style="width: 0%"></div></div>
-                                <div class="diagnostico">${obterDiagnostico(registro.pontuacao)}</div>
-                            </div>
-                            <div class="score">${registro.pontuacao}</div>
-                        </div>
-                        <div class="top-videos" id="videos-${registro.pais}"><div style="color:#888; font-size:11px;">Carregando evidências...</div></div>
-                    `;
-
-                    container.appendChild(block);
-                    setTimeout(() => { block.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`; }, 100);
-                    buscarTopVideos(registro.pais, block.querySelector(`#videos-${registro.pais}`));
-                });
-
+                dadosGlobaisCache = await response.json();
+                renderizarRanking();
             } catch (error) {
-                document.getElementById("ranking-container").innerHTML = "<div class='loading'>Erro crítico ao ler o motor global.</div>";
-                document.getElementById("ultima-varredura").innerText = "Falha de conexão com a infraestrutura.";
+                document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
+                document.getElementById("ultima-varredura").innerText = traducoes[idiomaAtual].falhaConexao;
             }
         }
-        carregarRanking();
+
+        carregarDadosIniciais();
     </script>
 </body>
 </html>
