@@ -15,7 +15,6 @@
         h1 { font-size: 48px; font-weight: 700; line-height: 1; text-transform: uppercase; }
         .subtitle { font-size: 16px; margin-top: 10px; font-weight: 400; color: #666666; line-height: 1.4; padding-right: 140px; }
         
-        /* Seletor de Idioma Minimalista */
         .lang-selector {
             position: absolute;
             top: 0;
@@ -83,14 +82,18 @@
         .country-block { border-bottom: 1px solid #e5e5e5; padding: 24px 0; }
         .country-block:last-child { border-bottom: 2px solid #000000; }
         .country-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-        .country-info { width: 80px; flex-shrink: 0; }
-        .flag-code { font-size: 28px; font-weight: 700; line-height: 1; }
+        
+        .country-info { width: 110px; flex-shrink: 0; }
+        .flag-code { font-size: 24px; font-weight: 700; line-height: 1; white-space: nowrap; }
+        .flag-emoji { font-size: 22px; margin-right: 8px; vertical-align: middle; }
+
         .bar-section { flex-grow: 1; }
         .bar-container { width: 100%; height: 16px; background-color: #f0f0f0; position: relative; margin-bottom: 8px; }
         .bar-fill { height: 100%; background-color: #000000; width: 0%; transition: width 1.2s cubic-bezier(0.1, 0.8, 0.2, 1); }
         .diagnostico { font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: #555555; }
         .score { font-size: 32px; font-weight: 700; text-align: right; width: 80px; flex-shrink: 0; line-height: 1; }
-        .top-videos { margin-top: 16px; padding-left: 80px; font-size: 13px; color: #444444; display: none; }
+        
+        .top-videos { margin-top: 16px; padding-left: 110px; font-size: 13px; color: #444444; display: none; }
         .top-videos-title { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: #888888; margin-bottom: 6px; }
         .video-item { margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
         .video-item span { color: #888888; }
@@ -98,8 +101,8 @@
         @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
         @media (max-width: 600px) {
             body { padding: 40px 20px; } h1 { font-size: 32px; } .country-row { gap: 16px; }
-            .country-info { width: 50px; } .flag-code { font-size: 20px; } .score { font-size: 22px; width: 50px; }
-            .top-videos { padding-left: 50px; }
+            .country-info { width: 80px; } .flag-code { font-size: 18px; } .flag-emoji { font-size: 18px; margin-right: 4px; } 
+            .score { font-size: 22px; width: 50px; } .top-videos { padding-left: 80px; }
             .escala-tabela td { display: block; width: 100%; padding: 4px 0; }
             .td-faixa { font-size: 11px; }
             .lang-selector { position: relative; margin-bottom: 20px; text-align: left; }
@@ -114,7 +117,8 @@
             <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
         <h1>The Darwin Index</h1>
-        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.</div>
+        <!-- Subtítulo inicial formatado com os nomes por extenso e siglas em PT -->
+        <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
         <div id="ultima-varredura" class="timestamp-aviso">Buscando última varredura dos dados...</div>
     </header>
 
@@ -161,9 +165,20 @@
         let idiomaAtual = 'pt';
         let dadosGlobaisCache = [];
 
+        const dicionarioBandeiras = {
+            "BR": "🇧🇷", "US": "🇺🇸", "JP": "🇯🇵", "IN": "🇮🇳", "GB": "🇬🇧",
+            "KR": "🇰🇷", "MX": "🇲🇽", "FR": "🇫🇷", "DE": "🇩🇪", "ID": "🇮🇩", 
+            "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
+        };
+
+        function obterBandeira(sigla) {
+            const siglaUpper = sigla.toUpperCase();
+            return dicionarioBandeiras[siglaUpper] ? `<span class="flag-emoji">${dicionarioBandeiras[siglaUpper]}</span>` : "";
+        }
+
         const traducoes = {
             pt: {
-                subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo global através do Top 20 do YouTube.",
+                subtitle: "Mapeamento e monitoramento estatístico do declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
@@ -183,7 +198,7 @@
                 }
             },
             en: {
-                subtitle: "Statistical mapping and monitoring of global cognitive decline through YouTube's Top 20 Trending.",
+                subtitle: "Statistical mapping and monitoring of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
                 escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
                 loading: "Synchronizing data with the population database...",
                 erro: "Critical error reading the global engine.",
@@ -203,7 +218,7 @@
                 }
             },
             es: {
-                subtitle: "Mapeo y monitoreo estadístico del declive cognitivo global a través del Top 20 de Tendencias de YouTube.",
+                subtitle: "Mapeo y monitoreo estadístico del declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
                 loading: "Sincronizando datos con la base de datos poblacional...",
                 erro: "Error crítico al leer el motor global.",
@@ -213,7 +228,7 @@
                 as: "a las",
                 topVideos: "Top 3 Videos en Tendencia en",
                 carregandoEvidencias: "Cargando evidencias...",
-                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
+                metodologia: "<strong>Metodología:</strong> Algoritmo basado en la Ecología de la IPv4 Atención Colectiva (Lorenz-Spreen et al., Nature). Escala de 0 a 100. Penalizaciones aplicadas para tiempos de enfoque inferiores a 8 minutos y consumo de Shorts/Brain Rot. Recompensa (Atención de Platino) para un enfoque constante superior a 20 minutos.",
                 diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo enfocado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
@@ -237,12 +252,10 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Traduz textos estáticos
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
             document.getElementById("txt-metodologia").innerHTML = traducoes[lang].metodologia;
             
-            // Traduz a tabela da escala
             document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
             document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
             document.getElementById("diag-miseravel").innerText = traducoes[lang].escalaDesc.miseravel[0];
@@ -252,7 +265,6 @@
             document.getElementById("diag-terminal").innerText = traducoes[lang].escalaDesc.terminal[0];
             document.getElementById("desc-terminal").innerText = traducoes[lang].escalaDesc.terminal[1];
 
-            // Renderiza o ranking novamente com o novo idioma
             renderizarRanking();
         }
 
@@ -281,7 +293,6 @@
                 return;
             }
 
-            // Atualiza o carimbo de data
             if (dadosGlobaisCache[0].created_at) {
                 const dataBanco = new Date(dadosGlobaisCache[0].created_at);
                 let locale = 'pt-BR';
@@ -314,7 +325,9 @@
 
                 block.innerHTML = `
                     <div class="country-row">
-                        <div class="country-info"><div class="flag-code">${registro.pais}</div></div>
+                        <div class="country-info">
+                            <div class="flag-code">${obterBandeira(registro.pais)}${registro.pais.toUpperCase()}</div>
+                        </div>
                         <div class="bar-section">
                             <div class="bar-container"><div class="bar-fill" style="width: 0%"></div></div>
                             <div class="diagnostico">${obterDiagnostico(registro.pontuacao)}</div>
@@ -345,5 +358,3 @@
     </script>
 </body>
 </html>
-
-<!-- v5.1 -->
