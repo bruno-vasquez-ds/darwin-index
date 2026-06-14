@@ -66,14 +66,12 @@
         .diagnostico { font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: #555555; }
         .score { font-size: 32px; font-weight: 700; text-align: right; width: 80px; flex-shrink: 0; line-height: 1; }
         
-        .top-videos { margin-top: 16px; padding-left: 110px; font-size: 13px; color: #444444; display: none; }
-        .top-videos-title { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: #888888; margin-bottom: 6px; }
-        .video-item { margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-        .video-item span { color: #888888; }
-
-        /* Estilos da Seção de Afiliados */
-        .livros-lista a { color: #000000; text-decoration: none; font-weight: 700; }
-        .livros-lista a:hover { text-decoration: underline; }
+        /* Área Expandida de Evidências Seguras do Banco */
+        .top-videos { margin-top: 16px; padding-left: 110px; font-size: 13px; color: #444444; }
+        .top-videos-title { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: #888888; margin-bottom: 8px; }
+        .video-item { margin-bottom: 8px; line-height: 1.4; }
+        .video-meta { font-size: 11px; color: #888888; text-transform: uppercase; font-weight: 700; letter-spacing: 0.02em; margin-top: 2px; }
+        .meta-tag { background: #f0f0f0; color: #000000; padding: 1px 5px; font-size: 10px; margin-right: 4px; }
 
         /* Estilos do Rodapé Sanfona */
         footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e5e5; }
@@ -110,7 +108,6 @@
             <button class="lang-btn active" onclick="mudarIdioma('pt')">PT</button>│<button class="lang-btn" onclick="mudarIdioma('en')">EN</button>│<button class="lang-btn" onclick="mudarIdioma('es')">ES</button>
         </div>
         <h1>The Darwin Index</h1>
-        <!-- Subtítulo atualizado com "o risco de declínio" -->
         <div id="txt-subtitle" class="subtitle">Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.</div>
         <div id="txt-manifesto" class="manifesto-block">
             O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa "evolução" biologicamente viável.
@@ -148,14 +145,6 @@
         <div id="ranking-container">
             <div class="loading">Sincronizando dados...</div>
         </div>
-
-        <!-- Seção de Bibliografia com Links de Afiliados integrada de forma minimalista -->
-        <section class="escala-racional" style="border-top: 1px solid #e5e5e5; border-bottom: none; margin-top: 60px; padding-top: 20px;">
-            <div id="txt-bibliografia-titulo" class="escala-titulo">Bibliografia de Suporte (Links Amazon)</div>
-            <ul id="lista-livros" class="livros-lista" style="list-style: none; font-size: 13px; line-height: 1.8;">
-                <!-- Injetado dinamicamente via JS -->
-            </ul>
-        </section>
     </main>
 
     <footer>
@@ -166,8 +155,8 @@
     </footer>
 
     <script>
+        // Chamada apontando para a Edge Function que lê a tabela historico_darwin_v2
         const API_URL = "https://ynlxobwwwapkboeldoyb.supabase.co/functions/v1/darwin-index-main-global-v5";
-        const YT_KEY = "AIzaSyAl_aEtRYTb5M_CX04uBoXVn_DNFQ9knr0";
         
         let idiomaAtual = 'pt';
         let dadosGlobaisCache = [];
@@ -175,7 +164,7 @@
         const dicionarioBandeiras = {
             "BR": "🇧🇷", "US": "🇺🇸", "JP": "🇯🇵", "IN": "🇮🇳", "GB": "🇬🇧",
             "KR": "🇰🇷", "MX": "🇲🇽", "FR": "🇫🇷", "DE": "🇩🇪", "ID": "🇮🇩", 
-            "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇬", "TW": "🇹🇼"
+            "CA": "🇨🇦", "AU": "🇦🇺", "HK": "🇭🇰", "TW": "🇹🇼"
         };
 
         function obterBandeira(sigla) {
@@ -200,15 +189,15 @@
                 subtitle: "Mapeamento e monitoramento estatístico do risco de declínio cognitivo no Brasil (BR), Estados Unidos (US), Japão (JP), Índia (IN) e Reino Unido (GB) através do Top 20 do YouTube.",
                 manifesto: "O tecnocapitalismo exige que a raça humana evolua para se adaptar a um ambiente de conteúdo altamente estimulante. O Índice Darwin mapeia o quão próximo cada nação está de tornar essa \"evolução\" biologicamente viável.",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
-                bibliografiaTitulo: "Bibliografia de Suporte (Links Amazon)",
                 loading: "Sincronizando dados com o banco de dados populacional...",
                 erro: "Erro crítico ao ler o motor global.",
-                indisponivel: "Dados históricos de varredura indisponíveis.",
+                indisponivel: "Evidências de vídeo indisponíveis para esta amostragem.",
                 falhaConexao: "Falha de conexão com a infraestrutura.",
                 coleta: "Última amostragem coletada em:",
                 as: "às",
-                topVideos: "Top 3 Vídeos em Alta em",
-                carregandoEvidencias: "Carregando evidências...",
+                topVideos: "Evidências Digitais (Top Vídeos em Alta) em",
+                metaImpulsividade: "Impulsividade de Clique",
+                metaApelo: "Apelo do Título",
                 diagnosticos: ["Lúcidos (Baixo Risco)", "Miseráveis Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estágio Terminal (Idiocracia)"],
                 escalaDesc: {
                     lucido: ["Lúcidos (Baixo Risco)", "Ecossistema saudável. Predomínio de conteúdos de longa duração, consumo focado, alta retenção de tópicos complexos e imunidade a loops de dopamina rápida."],
@@ -216,11 +205,6 @@
                     dopado: ["Dopados por Algoritmo", "Fragmentação severa de foco. Grade de atenção tomada por esquetes de comédia rápida e ruído cultural. Tempo de foco contínuo severamente reduzido."],
                     terminal: ["Estágio Terminal", "Idiocracia estabelecida. Overdose dopaminérgica causada por consumo massivo de formatos ultra-curtos (Shorts). Perda da capacidade de processamento de pensamento prolongado."]
                 },
-                livros: `
-                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_1" target="_blank">A Fábrica de Cretinos Digitais</a> - Michel Desmurget</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_2" target="_blank">Nação Dopamina</a> - Anna Lembke</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_AQUI_3" target="_blank">Foco Roubado</a> - Johann Hari</li>
-                `,
                 metodologiaHtml: `
                     <p><strong>O que o Índice Darwin realmente mede?</strong></p>
                     <p><em>Aviso metodológico: este site não é um estudo científico oficial e não afere a inteligência intrínseca ou o QI de nenhuma população. Trata-se de uma provocação artística e computacional sobre como a arquitetura digital modula a atenção coletiva.</em></p>
@@ -228,7 +212,7 @@
                     <ul>
                         <li><strong>O escoadouro do tédio:</strong> Avaliamos o topo de visualizações porque ele reflete o consumo no piloto automático das massas. É o retrato da mente coletiva em momentos de menor esforço mental voluntário.</li>
                         <li><strong>O relógio da paciência:</strong> Quando a média de tempo de retenção cai abaixo de 8 minutos, assume-se uma fragmentação severa de foco, indicando uma mente habituada a saltos contínuos de tópicos.</li>
-                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de stimuli.</li>
+                        <li><strong>A saturação por dopamina rápida:</strong> Vídeos de comédia e formatos ultra-curtos (Shorts) induzem recompensas cerebrais imediatas. O ranking quantifica o nível de anestesia e adaptação biológica de cada país a esse bombardeio de estímulos.</li>
                     </ul>
                     <p><strong>A Equação Matemática do Modelo:</strong></p>
                     <p>Os dados brutos coletados da API são submetidos a uma função cumulativa com estado basal de controle fixado em 50 pontos. Pontuações elevadas aproximam o país do limiar de colapso de atenção sustentada:</p>
@@ -248,15 +232,15 @@
                 subtitle: "Statistical mapping and monitoring of the risk of cognitive decline across Brazil (BR), United States (US), Japan (JP), India (IN), and United Kingdom (GB) through YouTube's Top 20 Trending.",
                 manifesto: "Techno-capitalism requires the human race to evolve in order to adapt to a highly stimulating content environment. The Darwin Index maps how close each nation is to making this \"evolution\" biologically viable.",
                 escalaTitulo: "Cognitive Diagnostic Metrics (0-100 Scale)",
-                bibliografiaTitulo: "Selected Reading (Amazon Links)",
                 loading: "Synchronizing data with the population database...",
                 erro: "Critical error reading the global engine.",
-                indisponivel: "Historical scan data unavailable.",
+                indisponivel: "Video evidence unavailable for this sampling.",
                 falhaConexao: "Infrastructure connection failure.",
                 coleta: "Last sample collected on:",
                 as: "at",
-                topVideos: "Top 3 Trending Videos in",
-                carregandoEvidencias: "Loading evidence...",
+                topVideos: "Digital Evidence (Top Trending Videos) in",
+                metaImpulsividade: "Click Impulsivity",
+                metaApelo: "Title Appeal",
                 diagnosticos: ["Lucid (Low Risk)", "Cognitive Miserables (Baseline)", "Algorithm Doped (Fragmented)", "Terminal Stage (Idiocracy)"],
                 escalaDesc: {
                     lucido: ["Lucid (Low Risk)", "Healthy ecosystem. Predominance of long-form content, focused consumption, high retention of complex topics, and immunity to fast dopamine loops."],
@@ -264,11 +248,6 @@
                     dopado: ["Algorithm Doped", "Severe focus fragmentation. Attention grid taken over by fast comedy skits and cultural noise. Continuous focus time severely reduced."],
                     terminal: ["Terminal Stage", "Established Idiocracy. Dopaminergic overdose caused by massive consumption of ultra-short formats (Shorts). Loss of long-term thought processing capacity."]
                 },
-                livros: `
-                    <li>• <a href="https://amzn.to/SUA_TAG_US_1" target="_blank">The Digital Cretin Factory</a> - Michel Desmurget</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_US_2" target="_blank">Dopamine Nation</a> - Anna Lembke</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_US_3" target="_blank">Stolen Focus</a> - Johann Hari</li>
-                `,
                 metodologiaHtml: `
                     <p><strong>What does The Darwin Index actually measure?</strong></p>
                     <p><em>Methodological Notice: This site is not an official scientific study and does not measure intrinsic intelligence or IQ. It is an artistic and computational provocation on how digital architecture shapes collective attention.</em></p>
@@ -294,29 +273,24 @@
             },
             es: {
                 subtitle: "Mapeo y monitoreo estadístico del riesgo de declive cognitivo en Brasil (BR), Estados Unidos (US), Japón (JP), India (IN) y el Reino Unido (GB) a través del Top 20 de Tendencias de YouTube.",
-                manifesto: "El tecnocapitalismo exige que la raza humana evolue para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
+                manifesto: "El tecnocapitalismo exige que la raza humana evolucione para adaptarse a un entorno de contenido altamente estimulante. El Índice Darwin mapea qué tan cerca está cada nación de hacer biológicamente viable esta \"evolución\".",
                 escalaTitulo: "Métricas de Diagnóstico Cognitivo (Escala 0-100)",
-                bibliografiaTitulo: "Bibliografía Seleccionada (Enlaces Amazon)",
                 loading: "Sincronizando datos con la base de datos poblacional...",
                 erro: "Error crítico al leer el motor global.",
-                indisponivel: "Datos históricos de escaneo no disponibles.",
+                indisponivel: "Evidencias de video no disponibles para esta muestra.",
                 falhaConexao: "Fallo de conexión con la infraestructura.",
                 coleta: "Última muestra recolectada el:",
                 as: "a las",
-                topVideos: "Top 3 Videos en Tendencia en",
-                carregandoEvidencias: "Cargando evidencias...",
+                topVideos: "Evidencias Digitales (Top Videos en Tendencia) en",
+                metaImpulsividade: "Impulsividad de Clic",
+                metaApelo: "Apelación del Título",
                 diagnosticos: ["Lúcidos (Bajo Riesgo)", "Miserables Cognitivos (Estado Basal)", "Dopados por Algoritmo (Fragmentados)", "Estadio Terminal (Idiocracia)"],
                 escalaDesc: {
-                    lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo enfocado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
+                    lucido: ["Lúcidos (Bajo Riesgo)", "Ecosistema saludable. Predominio de contenidos de larga duración, consumo focado, alta retención de temas complejos e inmunidad a bucles de dopamina rápida."],
                     miseravel: ["Miserables Cognitivos", "Estado basal de la población conectada moderna. Equilibrio inestable entre consumo útil y entretenimiento pasivo. Enfoque lineal preservado pero altamente vulnerable."],
                     dopado: ["Dopados por Algoritmo", "Fragmentación severa del enfoque. Red de atención dominada por sketches de comedia rápida y ruido cultural. Tiempo de enfoque continuo severamente reducido."],
                     terminal: ["Estadio Terminal", "Idiocracia establecida. Sobredosis dopaminérgica causada por el consumo masivo de formatos ultra cortos (Shorts). Pérdida de la capacidad de procesamiento de pensamiento a largo plazo."]
                 },
-                livros: `
-                    <li>• <a href="https://amzn.to/SUA_TAG_ES_1" target="_blank">La fábrica de cretinos digitales</a> - Michel Desmurget</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_ES_2" target="_blank">Generación Dopamina</a> - Anna Lembke</li>
-                    <li>• <a href="https://amzn.to/SUA_TAG_ES_3" target="_blank">El valor de la atención</a> - Johann Hari</li>
-                `,
                 metodologiaHtml: `
                     <p><strong>¿Qué mide realmente el Índice Darwin?</strong></p>
                     <p><em>Aviso Metodológico: Este sitio no es un estudio científico oficial y no mide la inteligencia intrínseca ni el CI. Es una provocación artística y computacional sobre cómo la arquitectura digital modula la atención colectiva.</em></p>
@@ -342,14 +316,6 @@
             }
         };
 
-        function obterDiagnostico(nota) {
-            const arr = traducoes[idiomaAtual].diagnosticos;
-            if (nota <= 30) return arr[0];
-            if (nota <= 55) return arr[1];
-            if (nota <= 75) return arr[2];
-            return arr[3];
-        }
-
         function mudarIdioma(lang) {
             idiomaAtual = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
@@ -358,8 +324,6 @@
             document.getElementById("txt-subtitle").innerText = traducoes[lang].subtitle;
             document.getElementById("txt-manifesto").innerText = traducoes[lang].manifesto;
             document.getElementById("txt-escala-titulo").innerText = traducoes[lang].escalaTitulo;
-            document.getElementById("txt-bibliografia-titulo").innerText = traducoes[lang].bibliografiaTitulo;
-            document.getElementById("lista-livros").innerHTML = traducoes[lang].livros;
             
             document.getElementById("diag-lucido").innerText = traducoes[lang].escalaDesc.lucido[0];
             document.getElementById("desc-lucido").innerText = traducoes[lang].escalaDesc.lucido[1];
@@ -377,23 +341,6 @@
             }
 
             renderizarRanking();
-        }
-
-        async function buscarTopVideos(pais, elementoDestino) {
-            try {
-                const url = `https://www.googleapis.com/youtube/v3/videos?chart=mostPopular&regionCode=${pais}&maxResults=3&part=snippet&key=${YT_KEY}`;
-                const res = await fetch(url);
-                const dados = await res.json();
-                
-                if (dados.items && dados.items.length > 0) {
-                    let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${pais}:</div>`;
-                    dados.items.forEach((item, index) => {
-                        htmlVideos += `<div class="video-item">${index + 1}. <strong>${item.snippet.title}</strong> <span>• ${item.snippet.channelTitle}</span></div>`;
-                    });
-                    elementoDestino.innerHTML = htmlVideos;
-                    elementoDestino.style.display = "block";
-                }
-            } catch (e) { console.error(e); }
         }
 
         function renderizarRanking() {
@@ -420,9 +367,7 @@
 
             dadosValidos.forEach(item => {
                 const nomePais = item.pais || item.Pais || item.PAIS;
-                if (!paisesUnicos[nomePais]) {
-                    paisesUnicos[nomePais] = item;
-                }
+                if (!paisesUnicos[nomePais]) { paisesUnicos[nomePais] = item; }
             });
 
             const dadosFinais = Object.values(paisesUnicos);
@@ -433,6 +378,25 @@
             dadosFinais.forEach(registro => {
                 const block = document.createElement("div");
                 block.className = "country-block";
+
+                // Puxa e renderiza os vídeos salvos de forma estática do banco de dados (JSON)
+                let htmlVideos = `<div class="top-videos-title">${traducoes[idiomaAtual].topVideos} ${registro.pais.toUpperCase()}:</div>`;
+                
+                if (registro.videos_json) {
+                    const listaVideos = typeof registro.videos_json === "string" ? JSON.parse(registro.videos_json) : registro.videos_json;
+                    listaVideos.forEach((vid, index) => {
+                        htmlVideos += `
+                            <div class="video-item">
+                                ${index + 1}. <strong>${vid.titulo}</strong> <span>• ${vid.canal}</span>
+                                <div class="video-meta">
+                                    <span class="meta-tag">${traducoes[idiomaAtual].metaImpulsividade}: ${vid.impulsividade}</span>
+                                    <span class="meta-tag">${traducoes[idiomaAtual].metaApelo}: ${vid.apelo}</span>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    htmlVideos += `<div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].indisponivel}</div>`;
+                }
 
                 block.innerHTML = `
                     <div class="country-row">
@@ -445,21 +409,20 @@
                         </div>
                         <div class="score">${registro.pontuacao}</div>
                     </div>
-                    <div class="top-videos" id="videos-${registro.pais}"><div style="color:#888; font-size:11px;">${traducoes[idiomaAtual].carregandoEvidencias}</div></div>
+                    <div class="top-videos">${htmlVideos}</div>
                 `;
 
                 container.appendChild(block);
                 setTimeout(() => { block.querySelector(".bar-fill").style.width = `${registro.pontuacao}%`; }, 100);
-                buscarTopVideos(registro.pais, block.querySelector(`#videos-${registro.pais}`));
             });
         }
 
         async function carregarDadosIniciais() {
             try {
+                // Requisição única adicionando timestamp para quebrar cache agressivo do navegador
                 const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
                 dadosGlobaisCache = await response.json();
                 document.getElementById("metodologia-bloco").innerHTML = traducoes['pt'].metodologiaHtml;
-                document.getElementById("lista-livros").innerHTML = traducoes['pt'].livros;
                 renderizarRanking();
             } catch (error) {
                 document.getElementById("ranking-container").innerHTML = `<div class='loading'>${traducoes[idiomaAtual].erro}</div>`;
